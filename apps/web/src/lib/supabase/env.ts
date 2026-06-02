@@ -19,3 +19,8 @@ export const supabaseEnv = {
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
   ),
 };
+
+export const apiUrl = assertEnv(
+  "NEXT_PUBLIC_API_URL",
+  process.env.NEXT_PUBLIC_API_URL,
+);
