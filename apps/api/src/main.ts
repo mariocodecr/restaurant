@@ -1,4 +1,4 @@
-import { Logger, ValidationPipe } from "@nestjs/common";
+import { Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
 
@@ -14,13 +14,8 @@ async function bootstrap() {
     credentials: true,
   });
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transform: true,
-    }),
-  );
+  // No global ValidationPipe — we use zod for body validation via dedicated
+  // pipes per route as DTOs land. class-validator isn't installed.
 
   const port = config.get("API_PORT", { infer: true });
   await app.listen(port);
