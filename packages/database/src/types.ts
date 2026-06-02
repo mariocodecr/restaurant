@@ -148,6 +148,20 @@ export type Database = {
     };
     Views: Record<string, never>;
     Functions: {
+      create_organization_with_branch: {
+        Args: {
+          branch_address: string;
+          branch_name: string;
+          branch_phone: string;
+          branch_timezone: string;
+          org_currency: string;
+          org_name: string;
+          org_slug: string;
+          org_tax_id: string;
+          org_timezone: string;
+        };
+        Returns: Json;
+      };
       user_can_manage_org: {
         Args: { target_org_id: string };
         Returns: boolean;
