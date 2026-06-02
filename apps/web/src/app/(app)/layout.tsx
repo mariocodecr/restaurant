@@ -21,9 +21,7 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
     .select("id", { count: "exact", head: true })
     .eq("is_active", true);
 
-  if ((count ?? 0) === 0) {
-    redirect("/onboarding");
-  }
+  if ((count ?? 0) === 0) redirect("/onboarding");
 
-  return <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">{children}</div>;
+  return <div className="min-h-screen">{children}</div>;
 }

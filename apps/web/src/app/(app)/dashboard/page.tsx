@@ -1,3 +1,4 @@
+import { GlassCard } from "@/components/ui/glass-card";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function DashboardPage() {
@@ -12,16 +13,22 @@ export default async function DashboardPage() {
     .eq("is_active", true);
 
   return (
-    <main className="mx-auto max-w-3xl px-6 py-12">
-      <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
-        Bienvenido, {user?.email}
-      </h1>
-      <p className="mt-2 text-zinc-600 dark:text-zinc-400">
-        Tus memberships activas (visibles vía RLS):
-      </p>
-      <pre className="mt-6 overflow-auto rounded-lg border border-zinc-200 bg-white p-4 text-sm dark:border-zinc-800 dark:bg-zinc-900">
-        {JSON.stringify(memberships ?? [], null, 2)}
-      </pre>
+    <main className="mx-auto max-w-4xl px-6 py-12">
+      <header className="mb-8 space-y-2">
+        <p className="text-xs uppercase tracking-[0.2em] text-sky-300/70">Panel principal</p>
+        <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+          Bienvenido, {user?.email}
+        </h1>
+        <p className="text-sm text-white/60">
+          Tus memberships activas (visibles vía RLS):
+        </p>
+      </header>
+
+      <GlassCard>
+        <pre className="overflow-auto text-sm text-sky-100/90">
+          {JSON.stringify(memberships ?? [], null, 2)}
+        </pre>
+      </GlassCard>
     </main>
   );
 }

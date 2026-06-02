@@ -9,6 +9,7 @@ import {
 } from "@restaurant/shared";
 
 import { Button } from "@/components/ui/button";
+import { GlassCard } from "@/components/ui/glass-card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
@@ -57,15 +58,12 @@ export function OnboardingWizard({ ownerName }: OnboardingWizardProps) {
 
   function handleOrgNameChange(value: string) {
     setOrgName(value);
-    if (!slugTouched) {
-      setSlug(slugify(value));
-    }
+    if (!slugTouched) setSlug(slugify(value));
   }
 
   function goToBranchStep(e: FormEvent) {
     e.preventDefault();
     setError(null);
-
     const partial = CreateOrganizationSchema.pick({
       name: true,
       slug: true,
@@ -147,20 +145,20 @@ export function OnboardingWizard({ ownerName }: OnboardingWizardProps) {
   return (
     <div className="space-y-8">
       <header className="space-y-3 text-center">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">
+        <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
           {ownerName ? `Bienvenido, ${ownerName}` : "Configurá tu restaurante"}
         </h1>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-white/60">
           En dos pasos tenés tu primer local listo para operar.
         </p>
         <StepIndicator current={step} />
       </header>
 
-      <div className="rounded-lg border border-border bg-card p-6 shadow-lg sm:p-8">
+      <GlassCard>
         {step === 0 ? (
           <form onSubmit={goToBranchStep} className="space-y-5">
             <div className="space-y-2">
-              <Label htmlFor="orgName">Nombre del restaurante</Label>
+              <Label htmlFor="orgName" className="text-white/80">Nombre del restaurante</Label>
               <Input
                 id="orgName"
                 value={orgName}
@@ -173,7 +171,7 @@ export function OnboardingWizard({ ownerName }: OnboardingWizardProps) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="slug">Identificador único (slug)</Label>
+              <Label htmlFor="slug" className="text-white/80">Identificador único (slug)</Label>
               <Input
                 id="slug"
                 value={slug}
@@ -186,14 +184,14 @@ export function OnboardingWizard({ ownerName }: OnboardingWizardProps) {
                 required
                 disabled={isSubmitting}
               />
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-white/40">
                 Solo minúsculas, números y guiones. Se autogeneró del nombre — editalo si querés.
               </p>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="currency">Moneda</Label>
+                <Label htmlFor="currency" className="text-white/80">Moneda</Label>
                 <Input
                   id="currency"
                   value={currency}
@@ -206,7 +204,7 @@ export function OnboardingWizard({ ownerName }: OnboardingWizardProps) {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="timezone">Zona horaria</Label>
+                <Label htmlFor="timezone" className="text-white/80">Zona horaria</Label>
                 <Input
                   id="timezone"
                   value={timezone}
@@ -219,8 +217,8 @@ export function OnboardingWizard({ ownerName }: OnboardingWizardProps) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="taxId">
-                Cédula jurídica / Tax ID <span className="text-muted-foreground">(opcional)</span>
+              <Label htmlFor="taxId" className="text-white/80">
+                Cédula jurídica / Tax ID <span className="text-white/40">(opcional)</span>
               </Label>
               <Input
                 id="taxId"
@@ -241,7 +239,7 @@ export function OnboardingWizard({ ownerName }: OnboardingWizardProps) {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
-              <Label htmlFor="branchName">Nombre de la sucursal</Label>
+              <Label htmlFor="branchName" className="text-white/80">Nombre de la sucursal</Label>
               <Input
                 id="branchName"
                 value={branchName}
@@ -251,14 +249,14 @@ export function OnboardingWizard({ ownerName }: OnboardingWizardProps) {
                 autoFocus
                 disabled={isSubmitting}
               />
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-white/40">
                 Después podés agregar más sucursales desde el panel.
               </p>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="branchAddress">
-                Dirección <span className="text-muted-foreground">(opcional)</span>
+              <Label htmlFor="branchAddress" className="text-white/80">
+                Dirección <span className="text-white/40">(opcional)</span>
               </Label>
               <Input
                 id="branchAddress"
@@ -270,8 +268,8 @@ export function OnboardingWizard({ ownerName }: OnboardingWizardProps) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="branchPhone">
-                Teléfono <span className="text-muted-foreground">(opcional)</span>
+              <Label htmlFor="branchPhone" className="text-white/80">
+                Teléfono <span className="text-white/40">(opcional)</span>
               </Label>
               <Input
                 id="branchPhone"
@@ -285,9 +283,9 @@ export function OnboardingWizard({ ownerName }: OnboardingWizardProps) {
 
             {error ? <ErrorBanner message={error} /> : null}
 
-            <Separator />
+            <Separator className="bg-white/10" />
 
-            <div className="flex flex-col gap-2 sm:flex-row">
+            <div className="flex flex-col gap-3 sm:flex-row">
               <Button
                 type="button"
                 variant="outline"
@@ -304,7 +302,7 @@ export function OnboardingWizard({ ownerName }: OnboardingWizardProps) {
             </div>
           </form>
         )}
-      </div>
+      </GlassCard>
     </div>
   );
 }
@@ -323,12 +321,12 @@ function StepIndicator({ current }: { current: 0 | 1 }) {
         return (
           <li key={s.label} className="flex items-center gap-3">
             <div
-              className={`flex size-9 items-center justify-center rounded-full border text-sm font-medium transition-colors ${
+              className={`flex size-9 items-center justify-center rounded-full border text-sm font-medium transition-all ${
                 isComplete
-                  ? "border-primary bg-primary text-primary-foreground"
+                  ? "border-sky-300/70 bg-sky-400/20 text-sky-100 shadow-[0_0_15px_rgba(129,216,255,0.4)]"
                   : isActive
-                    ? "border-primary text-primary"
-                    : "border-border text-muted-foreground"
+                    ? "border-sky-400/70 text-sky-200"
+                    : "border-white/15 text-white/40"
               }`}
               aria-current={isActive ? "step" : undefined}
             >
@@ -336,13 +334,13 @@ function StepIndicator({ current }: { current: 0 | 1 }) {
             </div>
             <span
               className={`text-sm ${
-                isActive ? "font-medium text-foreground" : "text-muted-foreground"
+                isActive ? "font-medium text-white" : "text-white/40"
               }`}
             >
               {s.label}
             </span>
             {index < steps.length - 1 ? (
-              <div className="h-px w-8 bg-border" aria-hidden />
+              <div className="h-px w-8 bg-white/15" aria-hidden />
             ) : null}
           </li>
         );
@@ -355,7 +353,7 @@ function ErrorBanner({ message }: { message: string }) {
   return (
     <p
       role="alert"
-      className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive"
+      className="rounded-md border border-rose-500/30 bg-rose-500/10 px-3 py-2 text-sm text-rose-200"
     >
       {message}
     </p>

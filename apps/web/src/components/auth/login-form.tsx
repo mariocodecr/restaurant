@@ -6,6 +6,7 @@ import { useState, type FormEvent } from "react";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { GlassCard } from "@/components/ui/glass-card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
@@ -64,24 +65,24 @@ export function LoginForm() {
   }
 
   return (
-    <div className="w-full rounded-lg border border-border bg-card p-6 shadow-lg sm:p-8">
+    <GlassCard>
       <div className="space-y-6">
         <div className="space-y-2 text-center">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
+          <h1 className="text-3xl font-semibold tracking-tight text-white">
             Bienvenido de vuelta
           </h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-white/60">
             Ingresá a tu cuenta para gestionar tu restaurante
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-sm font-medium">
+            <Label htmlFor="email" className="text-white/80">
               Email
             </Label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <Mail className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-white/40" />
               <Input
                 id="email"
                 type="email"
@@ -98,18 +99,18 @@ export function LoginForm() {
 
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label htmlFor="password" className="text-sm font-medium">
+              <Label htmlFor="password" className="text-white/80">
                 Contraseña
               </Label>
               <Link
                 href="/forgot-password"
-                className="text-sm text-primary hover:underline focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
+                className="text-sm text-sky-300/90 hover:text-sky-200"
               >
                 ¿La olvidaste?
               </Link>
             </div>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <Lock className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-white/40" />
               <Input
                 id="password"
                 type={showPassword ? "text" : "password"}
@@ -124,7 +125,7 @@ export function LoginForm() {
               <button
                 type="button"
                 onClick={() => setShowPassword((v) => !v)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/80"
                 disabled={isLoading}
                 aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
               >
@@ -136,7 +137,7 @@ export function LoginForm() {
           {error ? (
             <p
               role="alert"
-              className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive"
+              className="rounded-md border border-rose-500/30 bg-rose-500/10 px-3 py-2 text-sm text-rose-200"
             >
               {error}
             </p>
@@ -149,10 +150,10 @@ export function LoginForm() {
 
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <Separator className="w-full" />
+            <Separator className="w-full bg-white/10" />
           </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-card px-2 text-muted-foreground">o continuar con</span>
+          <div className="relative flex justify-center text-[10px] uppercase tracking-widest">
+            <span className="bg-transparent px-3 text-white/40">o continuar con</span>
           </div>
         </div>
 
@@ -163,7 +164,7 @@ export function LoginForm() {
           onClick={handleGoogleSignIn}
           disabled={isLoading}
         >
-          <svg className="mr-2 size-4" viewBox="0 0 488 512" aria-hidden>
+          <svg className="size-4" viewBox="0 0 488 512" aria-hidden>
             <path
               fill="currentColor"
               d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"
@@ -172,16 +173,13 @@ export function LoginForm() {
           Continuar con Google
         </Button>
 
-        <p className="text-center text-sm">
-          <span className="text-muted-foreground">¿No tenés cuenta? </span>
-          <Link
-            href="/signup"
-            className="font-medium text-primary hover:underline focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
-          >
+        <p className="text-center text-sm text-white/60">
+          ¿No tenés cuenta?{" "}
+          <Link href="/signup" className="font-medium text-sky-300 hover:text-sky-200">
             Registrate
           </Link>
         </p>
       </div>
-    </div>
+    </GlassCard>
   );
 }
