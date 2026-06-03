@@ -147,6 +147,206 @@ export type Database = {
           },
         ];
       };
+      order_items: {
+        Row: {
+          created_at: string;
+          id: string;
+          line_total: number | null;
+          notes: string | null;
+          order_id: string;
+          organization_id: string;
+          product_id: string;
+          product_name_snapshot: string;
+          quantity: number;
+          unit_price: number;
+          updated_at: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          line_total?: number | null;
+          notes?: string | null;
+          order_id: string;
+          organization_id: string;
+          product_id: string;
+          product_name_snapshot: string;
+          quantity: number;
+          unit_price: number;
+          updated_at?: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          line_total?: number | null;
+          notes?: string | null;
+          order_id?: string;
+          organization_id?: string;
+          product_id?: string;
+          product_name_snapshot?: string;
+          quantity?: number;
+          unit_price?: number;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_fkey";
+            columns: ["order_id"];
+            isOneToOne: false;
+            referencedRelation: "orders";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "order_items_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "order_items_product_id_fkey";
+            columns: ["product_id"];
+            isOneToOne: false;
+            referencedRelation: "products";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      order_status_history: {
+        Row: {
+          changed_at: string;
+          changed_by_user_id: string | null;
+          from_status: string;
+          id: string;
+          notes: string | null;
+          order_id: string;
+          organization_id: string;
+          to_status: string;
+        };
+        Insert: {
+          changed_at?: string;
+          changed_by_user_id?: string | null;
+          from_status: string;
+          id?: string;
+          notes?: string | null;
+          order_id: string;
+          organization_id: string;
+          to_status: string;
+        };
+        Update: {
+          changed_at?: string;
+          changed_by_user_id?: string | null;
+          from_status?: string;
+          id?: string;
+          notes?: string | null;
+          order_id?: string;
+          organization_id?: string;
+          to_status?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "order_status_history_order_id_fkey";
+            columns: ["order_id"];
+            isOneToOne: false;
+            referencedRelation: "orders";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "order_status_history_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      orders: {
+        Row: {
+          branch_id: string;
+          cancelled_at: string | null;
+          created_at: string;
+          delivered_at: string | null;
+          discount_amount: number;
+          id: string;
+          notes: string | null;
+          opened_at: string;
+          order_number: number;
+          organization_id: string;
+          paid_at: string | null;
+          ready_at: string | null;
+          status: string;
+          subtotal: number;
+          table_id: string | null;
+          tax_amount: number;
+          total: number;
+          updated_at: string;
+          waiter_user_id: string;
+        };
+        Insert: {
+          branch_id: string;
+          cancelled_at?: string | null;
+          created_at?: string;
+          delivered_at?: string | null;
+          discount_amount?: number;
+          id?: string;
+          notes?: string | null;
+          opened_at?: string;
+          order_number?: number;
+          organization_id: string;
+          paid_at?: string | null;
+          ready_at?: string | null;
+          status?: string;
+          subtotal?: number;
+          table_id?: string | null;
+          tax_amount?: number;
+          total?: number;
+          updated_at?: string;
+          waiter_user_id: string;
+        };
+        Update: {
+          branch_id?: string;
+          cancelled_at?: string | null;
+          created_at?: string;
+          delivered_at?: string | null;
+          discount_amount?: number;
+          id?: string;
+          notes?: string | null;
+          opened_at?: string;
+          order_number?: number;
+          organization_id?: string;
+          paid_at?: string | null;
+          ready_at?: string | null;
+          status?: string;
+          subtotal?: number;
+          table_id?: string | null;
+          tax_amount?: number;
+          total?: number;
+          updated_at?: string;
+          waiter_user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "orders_branch_id_fkey";
+            columns: ["branch_id"];
+            isOneToOne: false;
+            referencedRelation: "branches";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "orders_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "orders_table_id_fkey";
+            columns: ["table_id"];
+            isOneToOne: false;
+            referencedRelation: "tables";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       organizations: {
         Row: {
           created_at: string;
