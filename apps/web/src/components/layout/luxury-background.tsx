@@ -2,21 +2,20 @@ import Image from "next/image";
 
 interface LuxuryBackgroundProps {
   /**
-   * Public path of a real restaurant photo, e.g. "/restaurant-bg.jpg".
-   * Drop the file into apps/web/public/ and pass the path here.
-   * If omitted, a CSS-only luxury gradient is used as a graceful fallback.
+   * Public path or remote URL of a restaurant photo. If omitted, a CSS-only
+   * warm luxury gradient is used as a graceful fallback.
    */
   imageSrc?: string;
-  /** 0 - 1, defaults to 0.6. Higher = more legible content, less photo. */
+  /** 0 - 1, defaults to 0.55. Higher = more legible content, less photo. */
   overlayOpacity?: number;
 }
 
 export function LuxuryBackground({
   imageSrc,
-  overlayOpacity = 0.6,
+  overlayOpacity = 0.55,
 }: LuxuryBackgroundProps) {
   return (
-    <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#070b14]">
+    <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#0a0908]">
       {imageSrc ? (
         <Image
           src={imageSrc}
@@ -27,36 +26,38 @@ export function LuxuryBackground({
           className="object-cover"
         />
       ) : (
-        // CSS-only fallback: warm restaurant ambience.
-        // Layered radial gradients simulate candles + spotlights against deep
-        // navy, with a soft brass top accent. Looks intentional, not blank.
+        // CSS fallback: warm restaurant ambience — amber spotlights on charcoal
         <div
           aria-hidden
           className="absolute inset-0"
           style={{
             backgroundImage: [
-              "radial-gradient(ellipse 60% 40% at 25% 30%, rgba(255, 178, 102, 0.18), transparent 70%)",
-              "radial-gradient(ellipse 50% 35% at 80% 70%, rgba(255, 138, 76, 0.12), transparent 75%)",
-              "radial-gradient(ellipse 40% 30% at 50% 100%, rgba(129, 216, 255, 0.08), transparent 80%)",
-              "linear-gradient(180deg, #0e1626 0%, #070b14 60%, #03060c 100%)",
+              "radial-gradient(ellipse 60% 40% at 25% 30%, rgba(212, 163, 92, 0.22), transparent 70%)",
+              "radial-gradient(ellipse 50% 35% at 80% 70%, rgba(181, 133, 67, 0.16), transparent 75%)",
+              "radial-gradient(ellipse 40% 30% at 50% 100%, rgba(255, 196, 110, 0.1), transparent 80%)",
+              "linear-gradient(180deg, #1a1611 0%, #0d0b08 60%, #050403 100%)",
             ].join(", "),
           }}
         />
       )}
+      {/* Warm-tinted dark overlay so glass cards stay readable */}
       <div
         aria-hidden
-        className="absolute inset-0 backdrop-blur-[2px]"
+        className="absolute inset-0"
         style={{
-          backgroundColor: `rgba(3, 6, 12, ${overlayOpacity})`,
+          background: `linear-gradient(180deg,
+            rgba(10, 9, 8, ${Math.max(0, overlayOpacity - 0.1)}) 0%,
+            rgba(10, 9, 8, ${overlayOpacity}) 50%,
+            rgba(10, 9, 8, ${Math.min(1, overlayOpacity + 0.15)}) 100%)`,
         }}
       />
-      {/* Top + bottom vignette for extra depth */}
+      {/* Soft vignette */}
       <div
         aria-hidden
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.5) 100%)",
+            "radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.55) 100%)",
         }}
       />
     </div>

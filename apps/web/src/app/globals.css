@@ -3,11 +3,17 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* =============================================================================
+   Luxury restaurant palette — warm gold/amber + deep wood + cream
+   Derived from the Momofuku Las Vegas reference photo so everything in the
+   app harmonizes with the background image.
+   ========================================================================== */
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -26,49 +32,71 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+
+  /* Brand tokens — usable as bg-[--gold-400] etc */
+  --color-gold-50:  var(--gold-50);
+  --color-gold-100: var(--gold-100);
+  --color-gold-200: var(--gold-200);
+  --color-gold-300: var(--gold-300);
+  --color-gold-400: var(--gold-400);
+  --color-gold-500: var(--gold-500);
+  --color-gold-600: var(--gold-600);
+  --color-cream:    var(--cream);
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --radius: 0.75rem;
+
+  /* Light theme placeholder — the app runs in .dark by default */
+  --background: #fbf7ef;
+  --foreground: #1a1611;
+  --card: #fbf7ef;
+  --card-foreground: #1a1611;
+  --popover: #fbf7ef;
+  --popover-foreground: #1a1611;
+  --primary: #b58543;
+  --primary-foreground: #fbf7ef;
+  --secondary: #efe6d2;
+  --secondary-foreground: #1a1611;
+  --muted: #efe6d2;
+  --muted-foreground: #6b5e49;
+  --accent: #efe6d2;
+  --accent-foreground: #1a1611;
+  --destructive: #b3261e;
+  --border: #d6c9a9;
+  --input: #d6c9a9;
+  --ring: #d4a35c;
+
+  /* Brand tokens (same across themes — palette derived from photo) */
+  --gold-50:  #fbf6ea;
+  --gold-100: #f3e7c5;
+  --gold-200: #e9d295;
+  --gold-300: #dbb866;
+  --gold-400: #d4a35c;
+  --gold-500: #b58543;
+  --gold-600: #8a6532;
+  --cream:    #f5ecdb;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  --background: #0a0908;
+  --foreground: #f5ecdb;
+  --card: rgba(20, 17, 13, 0.55);
+  --card-foreground: #f5ecdb;
+  --popover: #14110d;
+  --popover-foreground: #f5ecdb;
+  --primary: #d4a35c;
+  --primary-foreground: #14110d;
+  --secondary: rgba(213, 188, 138, 0.08);
+  --secondary-foreground: #f5ecdb;
+  --muted: rgba(213, 188, 138, 0.06);
+  --muted-foreground: #b9a989;
+  --accent: rgba(212, 163, 92, 0.15);
+  --accent-foreground: #f5ecdb;
+  --destructive: #d97757;
+  --border: rgba(212, 163, 92, 0.18);
+  --input: rgba(212, 163, 92, 0.18);
+  --ring: #d4a35c;
 }
 
 @layer base {
@@ -82,30 +110,35 @@
 }
 
 /* =============================================================================
-   Stardust button — luxury pearl/glow effect from 21st.dev
-   Used as the project's default Button. Multiple sizes via padding tokens.
+   Stardust button — luxury pearl/glow effect in warm AMBER tones.
+   Tuned to look great at any width (fixed or w-full).
    ========================================================================== */
 .stardust-btn {
-  --stardust-bg: #0a1929;
-  --stardust-glow: rgba(129, 216, 255, 0.9);
-  --stardust-radius: 9999px;
+  --stardust-bg-from: #2a1f10;   /* deepest amber-black */
+  --stardust-bg-via:  #6b4a1f;   /* burnt amber */
+  --stardust-bg-to:   #b58543;   /* burnished gold */
+  --stardust-text:    #fff4dc;   /* cream */
+  --stardust-radius:  9999px;
+
   position: relative;
   isolation: isolate;
   outline: none;
   cursor: pointer;
   border: 0;
   border-radius: var(--stardust-radius);
-  background-color: var(--stardust-bg);
-  transition: all 0.25s ease;
-  color: var(--stardust-glow);
+  background:
+    linear-gradient(180deg, var(--stardust-bg-from) 0%, var(--stardust-bg-via) 55%, var(--stardust-bg-to) 100%);
+  transition: transform 0.18s ease, box-shadow 0.25s ease, filter 0.25s ease;
+  color: var(--stardust-text);
   font-weight: 600;
   letter-spacing: 0.01em;
+  /* Outer drop + inner pearl rim shadows that work at any width. */
   box-shadow:
-    inset 0 0.3rem 0.9rem rgba(255, 255, 255, 0.3),
-    inset 0 -0.1rem 0.3rem rgba(0, 0, 0, 0.7),
-    inset 0 -0.4rem 0.9rem rgba(255, 255, 255, 0.5),
-    0 2rem 2.5rem rgba(0, 0, 0, 0.35),
-    0 0.6rem 0.8rem -0.4rem rgba(0, 0, 0, 0.8);
+    inset 0 1px 0 rgba(255, 220, 160, 0.45),                /* top hairline highlight */
+    inset 0 -1px 0 rgba(0, 0, 0, 0.55),                     /* bottom hairline shadow */
+    inset 0 -10px 18px -10px rgba(255, 196, 110, 0.55),     /* warm bottom inner glow */
+    0 12px 30px -10px rgba(0, 0, 0, 0.6),                   /* drop shadow */
+    0 0 0 1px rgba(255, 220, 160, 0.08);                    /* outer rim */
 }
 
 .stardust-btn .stardust-wrap {
@@ -115,61 +148,69 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.55rem;
   width: 100%;
+  height: 100%;
+  /* Inner highlight that spans full width — top "polished" sheen + warm pool */
+  background:
+    radial-gradient(120% 100% at 50% -20%, rgba(255, 240, 200, 0.35) 0%, rgba(255, 240, 200, 0) 55%),
+    radial-gradient(80% 80% at 50% 130%, rgba(255, 196, 110, 0.35) 0%, rgba(255, 196, 110, 0) 65%);
 }
 
 .stardust-btn .stardust-wrap::before,
 .stardust-btn .stardust-wrap::after {
   content: "";
   position: absolute;
-  transition: all 0.3s ease;
   pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
+/* Cream sheen sweep across the button on hover */
 .stardust-btn .stardust-wrap::before {
-  left: -15%;
-  right: -15%;
-  bottom: 25%;
-  top: -100%;
-  border-radius: 50%;
-  background-color: rgba(64, 180, 255, 0.15);
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(255, 240, 200, 0.2) 45%,
+    rgba(255, 245, 220, 0.4) 50%,
+    rgba(255, 240, 200, 0.2) 55%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  opacity: 0;
 }
 
+/* Ambient warm pulse halo behind the button on hover */
 .stardust-btn .stardust-wrap::after {
-  left: 6%;
-  right: 6%;
-  top: 12%;
-  bottom: 40%;
-  border-radius: 22px 22px 0 0;
-  box-shadow: inset 0 10px 8px -10px rgba(129, 216, 255, 0.6);
-  background: linear-gradient(
-    180deg,
-    rgba(64, 180, 255, 0.25) 0%,
-    rgba(0, 0, 0, 0) 50%,
-    rgba(0, 0, 0, 0) 100%
-  );
+  inset: -30% -15%;
+  border-radius: 9999px;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(212, 163, 92, 0.45) 0%, transparent 70%);
+  opacity: 0;
+  z-index: -1;
 }
 
 .stardust-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
   box-shadow:
-    inset 0 0.3rem 0.5rem rgba(129, 216, 255, 0.4),
-    inset 0 -0.1rem 0.3rem rgba(0, 0, 0, 0.7),
-    inset 0 -0.4rem 0.9rem rgba(64, 180, 255, 0.6),
-    0 2rem 2.5rem rgba(0, 0, 0, 0.4),
-    0 0.6rem 0.8rem -0.4rem rgba(0, 0, 0, 0.8);
+    inset 0 1px 0 rgba(255, 230, 175, 0.55),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.5),
+    inset 0 -12px 22px -10px rgba(255, 200, 120, 0.75),
+    0 18px 40px -12px rgba(212, 163, 92, 0.55),
+    0 0 0 1px rgba(255, 220, 160, 0.12);
 }
-.stardust-btn:hover:not(:disabled) .stardust-wrap::before { transform: translateY(-5%); }
-.stardust-btn:hover:not(:disabled) .stardust-wrap::after  { opacity: 0.4; transform: translateY(5%); }
+.stardust-btn:hover:not(:disabled) .stardust-wrap::before {
+  transform: translateX(100%);
+  opacity: 1;
+  transition: transform 0.9s ease, opacity 0.2s ease;
+}
+.stardust-btn:hover:not(:disabled) .stardust-wrap::after {
+  opacity: 0.5;
+}
 
 .stardust-btn:active:not(:disabled) {
-  transform: translateY(2px);
-  box-shadow:
-    inset 0 0.3rem 0.5rem rgba(129, 216, 255, 0.5),
-    inset 0 -0.1rem 0.3rem rgba(0, 0, 0, 0.8),
-    inset 0 -0.4rem 0.9rem rgba(64, 180, 255, 0.4),
-    0 2rem 2.5rem rgba(0, 0, 0, 0.3),
-    0 0.6rem 0.8rem -0.4rem rgba(0, 0, 0, 0.8);
+  transform: translateY(1px);
+  filter: brightness(0.96);
 }
 
 .stardust-btn:disabled {
@@ -179,46 +220,54 @@
 }
 
 .stardust-btn:focus-visible {
-  outline: 2px solid rgba(129, 216, 255, 0.7);
+  outline: 2px solid rgba(212, 163, 92, 0.7);
   outline-offset: 3px;
 }
 
-/* Glass / outline variant — frosted secondary button */
+/* Glass / outline secondary — frosted gold-tinted */
 .glass-btn {
   position: relative;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(212, 163, 92, 0.08);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: rgba(230, 243, 255, 0.95);
+  border: 1px solid rgba(212, 163, 92, 0.22);
+  color: var(--cream);
   transition: all 0.2s ease;
   font-weight: 500;
   cursor: pointer;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08) inset, 0 8px 24px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 1px 0 rgba(255, 220, 160, 0.08) inset, 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 .glass-btn:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(212, 163, 92, 0.16);
+  border-color: rgba(212, 163, 92, 0.4);
 }
 .glass-btn:active:not(:disabled) { transform: translateY(1px); }
 .glass-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.glass-btn:focus-visible { outline: 2px solid rgba(129, 216, 255, 0.6); outline-offset: 3px; }
+.glass-btn:focus-visible { outline: 2px solid rgba(212, 163, 92, 0.6); outline-offset: 3px; }
 
-/* Ghost variant — minimal text */
+/* Ghost — minimal warm text */
 .ghost-btn {
   background: transparent;
   border: 0;
-  color: rgba(230, 243, 255, 0.9);
+  color: var(--cream);
   transition: background 0.15s ease, color 0.15s ease;
   cursor: pointer;
   border-radius: 9999px;
 }
-.ghost-btn:hover:not(:disabled) { background: rgba(255, 255, 255, 0.06); }
+.ghost-btn:hover:not(:disabled) { background: rgba(212, 163, 92, 0.08); }
 .ghost-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.ghost-btn:focus-visible { outline: 2px solid rgba(129, 216, 255, 0.5); outline-offset: 2px; }
+.ghost-btn:focus-visible { outline: 2px solid rgba(212, 163, 92, 0.5); outline-offset: 2px; }
 
-/* Sparkle bullets shown/hidden on hover for stardust */
+/* Sparkle accent on stardust */
+.stardust-btn .stardust-spark-idle,
+.stardust-btn .stardust-spark-hover {
+  font-size: 0.7em;
+  line-height: 1;
+  color: rgba(255, 240, 200, 0.85);
+  text-shadow: 0 0 8px rgba(255, 196, 110, 0.7);
+  transform: translateY(-1px);
+}
 .stardust-btn .stardust-spark-idle  { display: inline-block; }
 .stardust-btn .stardust-spark-hover { display: none; }
 .stardust-btn:hover:not(:disabled) .stardust-spark-idle  { display: none; }

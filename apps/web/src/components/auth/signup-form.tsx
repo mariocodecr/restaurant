@@ -69,21 +69,21 @@ export function SignupForm() {
     <GlassCard>
       <div className="space-y-6">
         <div className="space-y-2 text-center">
-          <h1 className="text-3xl font-semibold tracking-tight text-white">
+          <h1 className="text-3xl font-semibold tracking-tight text-[--cream]">
             Creá tu cuenta
           </h1>
-          <p className="text-sm text-white/60">
+          <p className="text-sm text-[--cream]/60">
             Empezá a gestionar tu restaurante en minutos
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="fullName" className="text-white/80">
+            <Label htmlFor="fullName" className="text-[--cream]/85">
               Nombre completo
             </Label>
             <div className="relative">
-              <User className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-white/40" />
+              <User className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[--cream]/45" />
               <Input
                 id="fullName"
                 type="text"
@@ -99,11 +99,11 @@ export function SignupForm() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-white/80">
+            <Label htmlFor="email" className="text-[--cream]/85">
               Email
             </Label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-white/40" />
+              <Mail className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[--cream]/45" />
               <Input
                 id="email"
                 type="email"
@@ -119,11 +119,11 @@ export function SignupForm() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password" className="text-white/80">
+            <Label htmlFor="password" className="text-[--cream]/85">
               Contraseña
             </Label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-white/40" />
+              <Lock className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[--cream]/45" />
               <Input
                 id="password"
                 type={showPassword ? "text" : "password"}
@@ -139,7 +139,7 @@ export function SignupForm() {
               <button
                 type="button"
                 onClick={() => setShowPassword((v) => !v)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/80"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[--cream]/45 hover:text-[--cream]/85"
                 disabled={isLoading}
                 aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
               >
@@ -160,7 +160,7 @@ export function SignupForm() {
           {notice ? (
             <p
               role="status"
-              className="rounded-md border border-sky-500/30 bg-sky-500/10 px-3 py-2 text-sm text-sky-200"
+              className="rounded-md border border-[--gold-400]/40 bg-[--gold-400]/10 px-3 py-2 text-sm text-[--gold-200]"
             >
               {notice}
             </p>
@@ -171,11 +171,11 @@ export function SignupForm() {
           </Button>
         </form>
 
-        <Separator className="bg-white/10" />
+        <Separator className="bg-[--gold-400]/20" />
 
-        <p className="text-center text-sm text-white/60">
+        <p className="text-center text-sm text-[--cream]/60">
           ¿Ya tenés cuenta?{" "}
-          <Link href="/login" className="font-medium text-sky-300 hover:text-sky-200">
+          <Link href="/login" className="font-medium text-[--gold-300] hover:text-[--gold-200]">
             Iniciá sesión
           </Link>
         </p>

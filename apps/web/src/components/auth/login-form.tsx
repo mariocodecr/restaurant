@@ -68,21 +68,21 @@ export function LoginForm() {
     <GlassCard>
       <div className="space-y-6">
         <div className="space-y-2 text-center">
-          <h1 className="text-3xl font-semibold tracking-tight text-white">
+          <h1 className="text-3xl font-semibold tracking-tight text-[--cream]">
             Bienvenido de vuelta
           </h1>
-          <p className="text-sm text-white/60">
+          <p className="text-sm text-[--cream]/60">
             Ingresá a tu cuenta para gestionar tu restaurante
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-white/80">
+            <Label htmlFor="email" className="text-[--cream]/85">
               Email
             </Label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-white/40" />
+              <Mail className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[--cream]/45" />
               <Input
                 id="email"
                 type="email"
@@ -99,18 +99,18 @@ export function LoginForm() {
 
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label htmlFor="password" className="text-white/80">
+              <Label htmlFor="password" className="text-[--cream]/85">
                 Contraseña
               </Label>
               <Link
                 href="/forgot-password"
-                className="text-sm text-sky-300/90 hover:text-sky-200"
+                className="text-sm text-[--gold-300] hover:text-[--gold-200]"
               >
                 ¿La olvidaste?
               </Link>
             </div>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-white/40" />
+              <Lock className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[--cream]/45" />
               <Input
                 id="password"
                 type={showPassword ? "text" : "password"}
@@ -125,7 +125,7 @@ export function LoginForm() {
               <button
                 type="button"
                 onClick={() => setShowPassword((v) => !v)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/80"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[--cream]/45 hover:text-[--cream]/85"
                 disabled={isLoading}
                 aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
               >
@@ -150,10 +150,10 @@ export function LoginForm() {
 
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <Separator className="w-full bg-white/10" />
+            <Separator className="w-full bg-[--gold-400]/20" />
           </div>
           <div className="relative flex justify-center text-[10px] uppercase tracking-widest">
-            <span className="bg-transparent px-3 text-white/40">o continuar con</span>
+            <span className="bg-transparent px-3 text-[--cream]/45">o continuar con</span>
           </div>
         </div>
 
@@ -173,9 +173,9 @@ export function LoginForm() {
           Continuar con Google
         </Button>
 
-        <p className="text-center text-sm text-white/60">
+        <p className="text-center text-sm text-[--cream]/60">
           ¿No tenés cuenta?{" "}
-          <Link href="/signup" className="font-medium text-sky-300 hover:text-sky-200">
+          <Link href="/signup" className="font-medium text-[--gold-300] hover:text-[--gold-200]">
             Registrate
           </Link>
         </p>

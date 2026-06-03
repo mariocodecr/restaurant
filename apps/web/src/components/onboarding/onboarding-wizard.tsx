@@ -145,10 +145,10 @@ export function OnboardingWizard({ ownerName }: OnboardingWizardProps) {
   return (
     <div className="space-y-8">
       <header className="space-y-3 text-center">
-        <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+        <h1 className="text-3xl font-semibold tracking-tight text-[--cream] sm:text-4xl">
           {ownerName ? `Bienvenido, ${ownerName}` : "Configurá tu restaurante"}
         </h1>
-        <p className="text-sm text-white/60">
+        <p className="text-sm text-[--cream]/60">
           En dos pasos tenés tu primer local listo para operar.
         </p>
         <StepIndicator current={step} />
@@ -158,7 +158,7 @@ export function OnboardingWizard({ ownerName }: OnboardingWizardProps) {
         {step === 0 ? (
           <form onSubmit={goToBranchStep} className="space-y-5">
             <div className="space-y-2">
-              <Label htmlFor="orgName" className="text-white/80">Nombre del restaurante</Label>
+              <Label htmlFor="orgName" className="text-[--cream]/85">Nombre del restaurante</Label>
               <Input
                 id="orgName"
                 value={orgName}
@@ -171,7 +171,7 @@ export function OnboardingWizard({ ownerName }: OnboardingWizardProps) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="slug" className="text-white/80">Identificador único (slug)</Label>
+              <Label htmlFor="slug" className="text-[--cream]/85">Identificador único (slug)</Label>
               <Input
                 id="slug"
                 value={slug}
@@ -184,14 +184,14 @@ export function OnboardingWizard({ ownerName }: OnboardingWizardProps) {
                 required
                 disabled={isSubmitting}
               />
-              <p className="text-xs text-white/40">
+              <p className="text-xs text-[--cream]/45">
                 Solo minúsculas, números y guiones. Se autogeneró del nombre — editalo si querés.
               </p>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="currency" className="text-white/80">Moneda</Label>
+                <Label htmlFor="currency" className="text-[--cream]/85">Moneda</Label>
                 <Input
                   id="currency"
                   value={currency}
@@ -204,7 +204,7 @@ export function OnboardingWizard({ ownerName }: OnboardingWizardProps) {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="timezone" className="text-white/80">Zona horaria</Label>
+                <Label htmlFor="timezone" className="text-[--cream]/85">Zona horaria</Label>
                 <Input
                   id="timezone"
                   value={timezone}
@@ -217,8 +217,8 @@ export function OnboardingWizard({ ownerName }: OnboardingWizardProps) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="taxId" className="text-white/80">
-                Cédula jurídica / Tax ID <span className="text-white/40">(opcional)</span>
+              <Label htmlFor="taxId" className="text-[--cream]/85">
+                Cédula jurídica / Tax ID <span className="text-[--cream]/45">(opcional)</span>
               </Label>
               <Input
                 id="taxId"
@@ -239,7 +239,7 @@ export function OnboardingWizard({ ownerName }: OnboardingWizardProps) {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
-              <Label htmlFor="branchName" className="text-white/80">Nombre de la sucursal</Label>
+              <Label htmlFor="branchName" className="text-[--cream]/85">Nombre de la sucursal</Label>
               <Input
                 id="branchName"
                 value={branchName}
@@ -249,14 +249,14 @@ export function OnboardingWizard({ ownerName }: OnboardingWizardProps) {
                 autoFocus
                 disabled={isSubmitting}
               />
-              <p className="text-xs text-white/40">
+              <p className="text-xs text-[--cream]/45">
                 Después podés agregar más sucursales desde el panel.
               </p>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="branchAddress" className="text-white/80">
-                Dirección <span className="text-white/40">(opcional)</span>
+              <Label htmlFor="branchAddress" className="text-[--cream]/85">
+                Dirección <span className="text-[--cream]/45">(opcional)</span>
               </Label>
               <Input
                 id="branchAddress"
@@ -268,8 +268,8 @@ export function OnboardingWizard({ ownerName }: OnboardingWizardProps) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="branchPhone" className="text-white/80">
-                Teléfono <span className="text-white/40">(opcional)</span>
+              <Label htmlFor="branchPhone" className="text-[--cream]/85">
+                Teléfono <span className="text-[--cream]/45">(opcional)</span>
               </Label>
               <Input
                 id="branchPhone"
@@ -283,7 +283,7 @@ export function OnboardingWizard({ ownerName }: OnboardingWizardProps) {
 
             {error ? <ErrorBanner message={error} /> : null}
 
-            <Separator className="bg-white/10" />
+            <Separator className="bg-[--gold-400]/20" />
 
             <div className="flex flex-col gap-3 sm:flex-row">
               <Button
@@ -323,10 +323,10 @@ function StepIndicator({ current }: { current: 0 | 1 }) {
             <div
               className={`flex size-9 items-center justify-center rounded-full border text-sm font-medium transition-all ${
                 isComplete
-                  ? "border-sky-300/70 bg-sky-400/20 text-sky-100 shadow-[0_0_15px_rgba(129,216,255,0.4)]"
+                  ? "border-[--gold-300]/70 bg-[--gold-400]/20 text-[--gold-100] shadow-[0_0_15px_rgba(212,163,92,0.45)]"
                   : isActive
-                    ? "border-sky-400/70 text-sky-200"
-                    : "border-white/15 text-white/40"
+                    ? "border-[--gold-400]/70 text-[--gold-200]"
+                    : "border-[--gold-400]/20 text-[--cream]/45"
               }`}
               aria-current={isActive ? "step" : undefined}
             >
@@ -334,13 +334,13 @@ function StepIndicator({ current }: { current: 0 | 1 }) {
             </div>
             <span
               className={`text-sm ${
-                isActive ? "font-medium text-white" : "text-white/40"
+                isActive ? "font-medium text-[--cream]" : "text-[--cream]/45"
               }`}
             >
               {s.label}
             </span>
             {index < steps.length - 1 ? (
-              <div className="h-px w-8 bg-white/15" aria-hidden />
+              <div className="h-px w-8 bg-[--gold-400]/25" aria-hidden />
             ) : null}
           </li>
         );

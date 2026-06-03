@@ -21,10 +21,12 @@ export const metadata: Metadata = {
   description: "Plataforma SaaS multi-tenant para restaurantes",
 };
 
-// To use a real luxury restaurant photo as the background, drop a JPG into
-// apps/web/public/ (e.g. restaurant-bg.jpg) and uncomment the imageSrc prop
-// on <LuxuryBackground />. Until then the CSS-only fallback is rendered.
-const BG_IMAGE: string | undefined = undefined;
+// Luxury restaurant interior — crystal chandelier, warm tones.
+// Photo by Elyne Anthonissen on Unsplash (free license, no attribution required).
+// Swap by editing this URL or dropping a JPG into apps/web/public/ and pointing
+// here. The Unsplash CDN params keep the image sized + format-optimized.
+const BG_IMAGE =
+  "https://images.unsplash.com/photo-1502920764203-b859c2384716?auto=format&fit=crop&w=2400&q=80";
 
 export default function RootLayout({
   children,

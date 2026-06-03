@@ -98,8 +98,8 @@ export function LuxuryCursor() {
           left: pos.dot.x,
           top: pos.dot.y,
           transform: "translate(-50%, -50%)",
-          backgroundColor: "rgba(129, 216, 255, 0.95)",
-          boxShadow: "0 0 12px rgba(129, 216, 255, 0.8), 0 0 24px rgba(64, 180, 255, 0.5)",
+          backgroundColor: "rgba(212, 163, 92, 0.95)",
+          boxShadow: "0 0 12px rgba(255, 196, 110, 0.85), 0 0 24px rgba(212, 163, 92, 0.55)",
           transition: "width 0.12s ease, height 0.12s ease",
         }}
       />
@@ -111,11 +111,11 @@ export function LuxuryCursor() {
           left: pos.ring.x,
           top: pos.ring.y,
           transform: "translate(-50%, -50%)",
-          borderColor: "rgba(129, 216, 255, 0.55)",
+          borderColor: "rgba(212, 163, 92, 0.6)",
           boxShadow: hovering
-            ? "0 0 30px rgba(129, 216, 255, 0.35) inset, 0 0 20px rgba(129, 216, 255, 0.25)"
-            : "0 0 10px rgba(129, 216, 255, 0.2)",
-          backgroundColor: hovering ? "rgba(129, 216, 255, 0.06)" : "transparent",
+            ? "0 0 30px rgba(212, 163, 92, 0.4) inset, 0 0 20px rgba(255, 196, 110, 0.3)"
+            : "0 0 10px rgba(212, 163, 92, 0.22)",
+          backgroundColor: hovering ? "rgba(212, 163, 92, 0.08)" : "transparent",
           transition:
             "width 0.25s ease, height 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease",
         }}
