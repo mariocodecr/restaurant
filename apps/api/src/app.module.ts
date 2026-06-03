@@ -7,6 +7,7 @@ import { CategoriesModule } from "./modules/categories/categories.module";
 import { MeModule } from "./modules/me/me.module";
 import { OrganizationsModule } from "./modules/organizations/organizations.module";
 import { ProductsModule } from "./modules/products/products.module";
+import { TablesModule } from "./modules/tables/tables.module";
 import { AuthModule } from "./shared/auth/auth.module";
 import { validateEnv } from "./shared/config/env.validation";
 import { DatabaseModule } from "./shared/database/database.module";
@@ -24,6 +25,7 @@ import { DatabaseModule } from "./shared/database/database.module";
     OrganizationsModule,
     CategoriesModule,
     ProductsModule,
+    TablesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
