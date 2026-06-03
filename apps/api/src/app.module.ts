@@ -5,6 +5,7 @@ import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { CategoriesModule } from "./modules/categories/categories.module";
 import { MeModule } from "./modules/me/me.module";
+import { OrdersModule } from "./modules/orders/orders.module";
 import { OrganizationsModule } from "./modules/organizations/organizations.module";
 import { ProductsModule } from "./modules/products/products.module";
 import { TablesModule } from "./modules/tables/tables.module";
@@ -26,6 +27,7 @@ import { DatabaseModule } from "./shared/database/database.module";
     CategoriesModule,
     ProductsModule,
     TablesModule,
+    OrdersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
