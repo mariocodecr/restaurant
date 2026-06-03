@@ -4,3 +4,4 @@ export * from "./types/table-status.js";
 export * from "./schemas/organization.js";
 export * from "./schemas/category.js";
 export * from "./schemas/product.js";
+export * from "./schemas/table.js";

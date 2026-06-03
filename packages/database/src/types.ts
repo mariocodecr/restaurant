@@ -183,6 +183,60 @@ export type Database = {
         };
         Relationships: [];
       };
+      tables: {
+        Row: {
+          branch_id: string;
+          capacity: number;
+          created_at: string;
+          id: string;
+          is_active: boolean;
+          name: string;
+          organization_id: string;
+          sort_order: number;
+          status: string;
+          updated_at: string;
+        };
+        Insert: {
+          branch_id: string;
+          capacity?: number;
+          created_at?: string;
+          id?: string;
+          is_active?: boolean;
+          name: string;
+          organization_id: string;
+          sort_order?: number;
+          status?: string;
+          updated_at?: string;
+        };
+        Update: {
+          branch_id?: string;
+          capacity?: number;
+          created_at?: string;
+          id?: string;
+          is_active?: boolean;
+          name?: string;
+          organization_id?: string;
+          sort_order?: number;
+          status?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "tables_branch_id_fkey";
+            columns: ["branch_id"];
+            isOneToOne: false;
+            referencedRelation: "branches";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tables_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       products: {
         Row: {
           category_id: string;
