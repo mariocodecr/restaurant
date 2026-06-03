@@ -2,3 +2,5 @@ export * from "./types/roles.js";
 export * from "./types/order-status.js";
 export * from "./types/table-status.js";
 export * from "./schemas/organization.js";
+export * from "./schemas/category.js";
+export * from "./schemas/product.js";
