@@ -27,7 +27,7 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, available: true },
   { href: "/menu", label: "Menú", icon: UtensilsCrossed, available: true },
-  { href: "/mesas", label: "Mesas", icon: Grid3X3, available: false },
+  { href: "/mesas", label: "Mesas", icon: Grid3X3, available: true },
   { href: "/ordenes", label: "Órdenes", icon: Receipt, available: false },
   { href: "/cocina", label: "Cocina", icon: ChefHat, available: false },
   { href: "/inventario", label: "Inventario", icon: Package, available: false },
