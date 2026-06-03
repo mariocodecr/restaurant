@@ -8,10 +8,12 @@ import type { Database } from "@restaurant/database";
 import type { EnvVars } from "../config/env.validation";
 
 /**
- * Per-request Supabase client that carries the caller's JWT in the
- * Authorization header. RLS policies see auth.uid() = the calling user,
- * so all SELECT/INSERT/UPDATE/DELETE go through tenant isolation
- * exactly as if the user were querying Supabase directly.
+ * Per-request Supabase client that carries the caller's JWT via the
+ * `accessToken` callback (modern supabase-js pattern, required when using
+ * the new sb_publishable_* keys — the older global.headers Authorization
+ * override is not honored in that config). RLS policies see auth.uid() =
+ * the calling user, so all SELECT/INSERT/UPDATE/DELETE and RPC calls
+ * enforce tenant isolation exactly as if the user queried Supabase directly.
  *
  * Request-scoped because each HTTP call has its own user token.
  */
@@ -43,11 +45,7 @@ export class SupabaseRequestService {
           persistSession: false,
           autoRefreshToken: false,
         },
-        global: {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
+        accessToken: () => Promise.resolve(token),
       },
     );
     return this.cached;
