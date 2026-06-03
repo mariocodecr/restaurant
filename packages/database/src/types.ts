@@ -99,6 +99,123 @@ export type Database = {
           },
         ];
       };
+      invoices: {
+        Row: {
+          created_at: string;
+          currency: string;
+          customer_name: string | null;
+          customer_tax_id: string | null;
+          discount_amount: number;
+          id: string;
+          invoice_number: number;
+          issued_at: string;
+          order_id: string;
+          organization_id: string;
+          subtotal: number;
+          tax_amount: number;
+          total: number;
+          updated_at: string;
+        };
+        Insert: {
+          created_at?: string;
+          currency: string;
+          customer_name?: string | null;
+          customer_tax_id?: string | null;
+          discount_amount: number;
+          id?: string;
+          invoice_number: number;
+          issued_at?: string;
+          order_id: string;
+          organization_id: string;
+          subtotal: number;
+          tax_amount: number;
+          total: number;
+          updated_at?: string;
+        };
+        Update: {
+          created_at?: string;
+          currency?: string;
+          customer_name?: string | null;
+          customer_tax_id?: string | null;
+          discount_amount?: number;
+          id?: string;
+          invoice_number?: number;
+          issued_at?: string;
+          order_id?: string;
+          organization_id?: string;
+          subtotal?: number;
+          tax_amount?: number;
+          total?: number;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "invoices_order_id_fkey";
+            columns: ["order_id"];
+            isOneToOne: true;
+            referencedRelation: "orders";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "invoices_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      payments: {
+        Row: {
+          amount: number;
+          created_at: string;
+          id: string;
+          method: string;
+          order_id: string;
+          organization_id: string;
+          received_by_user_id: string;
+          reference: string | null;
+          updated_at: string;
+        };
+        Insert: {
+          amount: number;
+          created_at?: string;
+          id?: string;
+          method: string;
+          order_id: string;
+          organization_id: string;
+          received_by_user_id: string;
+          reference?: string | null;
+          updated_at?: string;
+        };
+        Update: {
+          amount?: number;
+          created_at?: string;
+          id?: string;
+          method?: string;
+          order_id?: string;
+          organization_id?: string;
+          received_by_user_id?: string;
+          reference?: string | null;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "payments_order_id_fkey";
+            columns: ["order_id"];
+            isOneToOne: false;
+            referencedRelation: "orders";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "payments_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       memberships: {
         Row: {
           branch_id: string | null;

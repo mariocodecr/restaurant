@@ -6,3 +6,4 @@ export * from "./schemas/category.js";
 export * from "./schemas/product.js";
 export * from "./schemas/table.js";
 export * from "./schemas/order.js";
+export * from "./schemas/payment.js";
