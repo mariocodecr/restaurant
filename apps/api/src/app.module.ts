@@ -6,6 +6,7 @@ import { AppService } from "./app.service";
 import { CategoriesModule } from "./modules/categories/categories.module";
 import { InvoicesModule } from "./modules/invoices/invoices.module";
 import { MeModule } from "./modules/me/me.module";
+import { MembershipsModule } from "./modules/memberships/memberships.module";
 import { OrdersModule } from "./modules/orders/orders.module";
 import { OrganizationsModule } from "./modules/organizations/organizations.module";
 import { PaymentsModule } from "./modules/payments/payments.module";
@@ -32,6 +33,7 @@ import { DatabaseModule } from "./shared/database/database.module";
     OrdersModule,
     PaymentsModule,
     InvoicesModule,
+    MembershipsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

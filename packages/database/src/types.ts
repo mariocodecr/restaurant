@@ -631,6 +631,23 @@ export type Database = {
         };
         Returns: Json;
       };
+      find_user_by_email: {
+        Args: { target_email: string };
+        Returns: string;
+      };
+      list_org_members: {
+        Args: { target_org_id: string };
+        Returns: {
+          branch_id: string;
+          created_at: string;
+          email: string;
+          full_name: string;
+          is_active: boolean;
+          membership_id: string;
+          role: string;
+          user_id: string;
+        }[];
+      };
       user_can_manage_org: {
         Args: { target_org_id: string };
         Returns: boolean;
