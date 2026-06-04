@@ -4,9 +4,11 @@ import { ConfigModule } from "@nestjs/config";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { CategoriesModule } from "./modules/categories/categories.module";
+import { InvoicesModule } from "./modules/invoices/invoices.module";
 import { MeModule } from "./modules/me/me.module";
 import { OrdersModule } from "./modules/orders/orders.module";
 import { OrganizationsModule } from "./modules/organizations/organizations.module";
+import { PaymentsModule } from "./modules/payments/payments.module";
 import { ProductsModule } from "./modules/products/products.module";
 import { TablesModule } from "./modules/tables/tables.module";
 import { AuthModule } from "./shared/auth/auth.module";
@@ -28,6 +30,8 @@ import { DatabaseModule } from "./shared/database/database.module";
     ProductsModule,
     TablesModule,
     OrdersModule,
+    PaymentsModule,
+    InvoicesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
