@@ -5,18 +5,24 @@ import { useRouter } from "next/navigation";
 import { useMemo, useState, type FormEvent } from "react";
 import {
   ArrowLeft,
+  Banknote,
   Check,
   ChefHat,
   CreditCard,
+  FileText,
   HandPlatter,
+  Landmark,
   Plus,
+  Receipt as ReceiptIcon,
   Trash2,
   X,
 } from "lucide-react";
 import {
   canTransition,
   ORDER_STATUS,
+  PAYMENT_METHOD,
   type OrderStatus,
+  type PaymentMethod,
 } from "@restaurant/shared";
 
 import { Button } from "@/components/ui/button";
@@ -56,6 +62,20 @@ interface OrderItemRow {
   notes: string | null;
 }
 
+interface PaymentRow {
+  id: string;
+  method: string;
+  amount: number;
+  reference: string | null;
+  created_at: string;
+}
+
+interface InvoiceRow {
+  id: string;
+  invoice_number: number;
+  issued_at: string;
+}
+
 interface ProductOption {
   id: string;
   name: string;
@@ -79,6 +99,8 @@ interface OrderDetailProps {
   products: ProductOption[];
   categories: CategoryOption[];
   tables: TableOption[];
+  payments: PaymentRow[];
+  invoice: InvoiceRow | null;
 }
 
 interface TransitionAction {
@@ -99,9 +121,17 @@ const NEXT_ACTION: Partial<Record<OrderStatus, TransitionAction[]>> = {
   [ORDER_STATUS.READY]: [
     { to: ORDER_STATUS.DELIVERED, label: "Entregada", icon: HandPlatter },
   ],
-  [ORDER_STATUS.DELIVERED]: [
-    { to: ORDER_STATUS.PAID, label: "Cobrar", icon: CreditCard },
-  ],
+  // delivered → paid is driven by the payments panel (auto-trigger when paid >= total)
+};
+
+const PAYMENT_METHOD_META: Record<
+  PaymentMethod,
+  { label: string; icon: typeof Banknote }
+> = {
+  [PAYMENT_METHOD.CASH]: { label: "Efectivo", icon: Banknote },
+  [PAYMENT_METHOD.CARD]: { label: "Tarjeta", icon: CreditCard },
+  [PAYMENT_METHOD.TRANSFER]: { label: "Transferencia", icon: Landmark },
+  [PAYMENT_METHOD.OTHER]: { label: "Otro", icon: ReceiptIcon },
 };
 
 export function OrderDetail({
@@ -110,6 +140,8 @@ export function OrderDetail({
   products,
   categories,
   tables,
+  payments,
+  invoice,
 }: OrderDetailProps) {
   const router = useRouter();
   const [showAdd, setShowAdd] = useState(false);
@@ -121,6 +153,12 @@ export function OrderDetail({
     order.table_id ? tables.find((t) => t.id === order.table_id)?.name ?? "Mesa" : "Sin mesa";
   const isClosed = status === ORDER_STATUS.PAID || status === ORDER_STATUS.CANCELLED;
   const canEditItems = !isClosed && status !== ORDER_STATUS.DELIVERED;
+
+  const paidTotal = useMemo(
+    () => payments.reduce((sum, p) => sum + Number(p.amount), 0),
+    [payments],
+  );
+  const remaining = Math.max(0, Number(order.total) - paidTotal);
 
   async function run<T>(fn: () => Promise<T>): Promise<void> {
     setBusy(true);
@@ -262,7 +300,7 @@ export function OrderDetail({
           )}
         </GlassCard>
 
-        {/* SIDEBAR — totals + actions */}
+        {/* SIDEBAR */}
         <div className="space-y-4">
           <GlassCard>
             <h2 className="mb-3 text-xs uppercase tracking-[0.2em] text-[--cream]/50">
@@ -278,44 +316,116 @@ export function OrderDetail({
             </dl>
           </GlassCard>
 
-          <GlassCard>
-            <h2 className="mb-3 text-xs uppercase tracking-[0.2em] text-[--cream]/50">
-              Acciones
-            </h2>
-            <div className="space-y-2">
-              {(NEXT_ACTION[status] ?? []).map((act) => {
-                const Icon = act.icon;
-                const allowed = canTransition(status, act.to);
-                const isCancel = act.to === ORDER_STATUS.CANCELLED;
-                return (
-                  <Button
-                    key={act.to}
-                    type="button"
-                    variant={isCancel ? "outline" : "default"}
-                    className="w-full"
-                    disabled={!allowed || busy}
-                    onClick={() =>
-                      run(() =>
-                        apiRequest(`/orders/${order.id}/transitions`, {
-                          method: "POST",
-                          body: { to: act.to },
-                        }),
-                      )
-                    }
-                  >
-                    <Icon className="size-4" />
-                    {act.label}
-                  </Button>
-                );
-              })}
-              {isClosed ? (
-                <p className="rounded-md bg-[--gold-400]/5 px-3 py-2 text-center text-xs text-[--cream]/50">
-                  Esta orden está {status === ORDER_STATUS.PAID ? "pagada" : "cancelada"} —
-                  no admite más cambios.
-                </p>
-              ) : null}
-            </div>
-          </GlassCard>
+          {/* Transition actions (only when there are non-payment transitions) */}
+          {NEXT_ACTION[status] && NEXT_ACTION[status]!.length > 0 ? (
+            <GlassCard>
+              <h2 className="mb-3 text-xs uppercase tracking-[0.2em] text-[--cream]/50">
+                Acciones
+              </h2>
+              <div className="space-y-2">
+                {NEXT_ACTION[status]!.map((act) => {
+                  const Icon = act.icon;
+                  const allowed = canTransition(status, act.to);
+                  const isCancel = act.to === ORDER_STATUS.CANCELLED;
+                  return (
+                    <Button
+                      key={act.to}
+                      type="button"
+                      variant={isCancel ? "outline" : "default"}
+                      className="w-full"
+                      disabled={!allowed || busy}
+                      onClick={() =>
+                        run(() =>
+                          apiRequest(`/orders/${order.id}/transitions`, {
+                            method: "POST",
+                            body: { to: act.to },
+                          }),
+                        )
+                      }
+                    >
+                      <Icon className="size-4" />
+                      {act.label}
+                    </Button>
+                  );
+                })}
+              </div>
+            </GlassCard>
+          ) : null}
+
+          {/* Payments panel — visible from delivered */}
+          {status === ORDER_STATUS.DELIVERED ? (
+            <GlassCard>
+              <PaymentsPanel
+                orderId={order.id}
+                total={Number(order.total)}
+                paidTotal={paidTotal}
+                remaining={remaining}
+                payments={payments}
+                busy={busy}
+                onRun={run}
+              />
+            </GlassCard>
+          ) : null}
+
+          {/* Invoice card — visible when paid */}
+          {status === ORDER_STATUS.PAID && invoice ? (
+            <GlassCard>
+              <h2 className="mb-3 text-xs uppercase tracking-[0.2em] text-[--cream]/50">
+                Factura
+              </h2>
+              <div className="space-y-3">
+                <div>
+                  <p className="font-mono text-lg font-semibold text-[--gold-200]">
+                    F-{String(invoice.invoice_number).padStart(6, "0")}
+                  </p>
+                  <p className="text-xs text-[--cream]/55">
+                    Emitida {new Date(invoice.issued_at).toLocaleString("es-CR")}
+                  </p>
+                </div>
+                <Button asChild className="w-full">
+                  <Link href={`/ordenes/${order.id}/factura`}>
+                    <FileText className="size-4" />
+                    Ver / imprimir factura
+                  </Link>
+                </Button>
+              </div>
+            </GlassCard>
+          ) : null}
+
+          {/* Read-only payments summary when paid */}
+          {status === ORDER_STATUS.PAID && payments.length > 0 ? (
+            <GlassCard>
+              <h2 className="mb-3 text-xs uppercase tracking-[0.2em] text-[--cream]/50">
+                Pagos
+              </h2>
+              <ul className="space-y-2 text-sm">
+                {payments.map((p) => {
+                  const meta =
+                    PAYMENT_METHOD_META[p.method as PaymentMethod] ??
+                    PAYMENT_METHOD_META[PAYMENT_METHOD.OTHER]!;
+                  const Icon = meta.icon;
+                  return (
+                    <li key={p.id} className="flex items-center justify-between gap-3">
+                      <span className="flex items-center gap-2 text-[--cream]/80">
+                        <Icon className="size-4 text-[--gold-300]" />
+                        {meta.label}
+                      </span>
+                      <span className="font-medium text-[--cream]">
+                        {formatMoney(Number(p.amount))}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </GlassCard>
+          ) : null}
+
+          {isClosed ? (
+            <p className="rounded-md bg-[--gold-400]/5 px-3 py-2 text-center text-xs text-[--cream]/50">
+              Esta orden está {status === ORDER_STATUS.PAID ? "pagada" : "cancelada"} —
+              no admite más cambios.
+            </p>
+          ) : null}
 
           {order.notes ? (
             <GlassCard>
@@ -330,6 +440,235 @@ export function OrderDetail({
     </div>
   );
 }
+
+// ---------------------------------------------------------------------------
+// PaymentsPanel
+// ---------------------------------------------------------------------------
+
+function PaymentsPanel({
+  orderId,
+  total,
+  paidTotal,
+  remaining,
+  payments,
+  busy,
+  onRun,
+}: {
+  orderId: string;
+  total: number;
+  paidTotal: number;
+  remaining: number;
+  payments: PaymentRow[];
+  busy: boolean;
+  onRun: <T>(fn: () => Promise<T>) => Promise<void>;
+}) {
+  const [showForm, setShowForm] = useState(payments.length === 0);
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h2 className="text-xs uppercase tracking-[0.2em] text-[--cream]/50">
+          Pagos
+        </h2>
+        {!showForm && remaining > 0 ? (
+          <button
+            type="button"
+            onClick={() => setShowForm(true)}
+            className="rounded-full p-1.5 text-[--gold-300] hover:bg-[--gold-400]/10"
+            aria-label="Agregar pago"
+            disabled={busy}
+          >
+            <Plus className="size-4" />
+          </button>
+        ) : null}
+      </div>
+
+      {payments.length > 0 ? (
+        <ul className="space-y-2 text-sm">
+          {payments.map((p) => {
+            const meta =
+              PAYMENT_METHOD_META[p.method as PaymentMethod] ??
+              PAYMENT_METHOD_META[PAYMENT_METHOD.OTHER]!;
+            const Icon = meta.icon;
+            return (
+              <li
+                key={p.id}
+                className="group flex items-center justify-between gap-3"
+              >
+                <span className="flex items-center gap-2 text-[--cream]/80">
+                  <Icon className="size-4 text-[--gold-300]" />
+                  <span>{meta.label}</span>
+                  {p.reference ? (
+                    <span className="text-xs text-[--cream]/40">
+                      · {p.reference}
+                    </span>
+                  ) : null}
+                </span>
+                <span className="flex items-center gap-2">
+                  <span className="font-medium text-[--cream]">
+                    {formatMoney(Number(p.amount))}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      onRun(() =>
+                        apiRequest(`/orders/${orderId}/payments/${p.id}`, {
+                          method: "DELETE",
+                        }),
+                      )
+                    }
+                    disabled={busy}
+                    className="rounded p-1 text-[--cream]/40 opacity-0 hover:bg-rose-500/20 hover:text-rose-200 group-hover:opacity-100"
+                    aria-label="Quitar pago"
+                  >
+                    <Trash2 className="size-3.5" />
+                  </button>
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+      ) : null}
+
+      <div className="space-y-1.5 rounded-md border border-[--gold-400]/15 bg-[--gold-400]/[0.04] px-3 py-2 text-sm">
+        <Row label="Pagado" value={paidTotal} />
+        <Row label="Falta" value={remaining} bold />
+      </div>
+
+      {remaining > 0 && showForm ? (
+        <AddPaymentForm
+          remaining={remaining}
+          onCancel={() => setShowForm(false)}
+          onSubmit={async (input) => {
+            await onRun(() =>
+              apiRequest(`/orders/${orderId}/payments`, {
+                method: "POST",
+                body: input,
+              }),
+            );
+            setShowForm(false);
+          }}
+        />
+      ) : null}
+
+      {remaining === 0 && paidTotal >= total ? (
+        <p className="rounded-md border border-emerald-400/30 bg-emerald-400/10 px-3 py-2 text-center text-xs text-emerald-200">
+          Total cubierto. La orden se marcó como pagada automáticamente.
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+function AddPaymentForm({
+  remaining,
+  onCancel,
+  onSubmit,
+}: {
+  remaining: number;
+  onCancel: () => void;
+  onSubmit: (input: {
+    method: PaymentMethod;
+    amount: number;
+    reference?: string;
+  }) => Promise<void>;
+}) {
+  const [method, setMethod] = useState<PaymentMethod>(PAYMENT_METHOD.CASH);
+  const [amount, setAmount] = useState(remaining.toFixed(2));
+  const [reference, setReference] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  async function handle(e: FormEvent) {
+    e.preventDefault();
+    const n = Number(amount);
+    if (!Number.isFinite(n) || n <= 0) return;
+    setBusy(true);
+    try {
+      await onSubmit({
+        method,
+        amount: n,
+        reference: reference.trim() || undefined,
+      });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <form
+      onSubmit={handle}
+      className="space-y-3 rounded-lg border border-[--gold-400]/15 bg-[#0a0908]/40 p-3"
+    >
+      <div className="grid grid-cols-2 gap-2">
+        {(Object.entries(PAYMENT_METHOD_META) as [PaymentMethod, (typeof PAYMENT_METHOD_META)[PaymentMethod]][]).map(
+          ([key, meta]) => {
+            const Icon = meta.icon;
+            const active = method === key;
+            return (
+              <button
+                key={key}
+                type="button"
+                onClick={() => setMethod(key)}
+                className={cn(
+                  "flex items-center justify-center gap-2 rounded-md border px-2 py-2 text-xs transition-colors",
+                  active
+                    ? "border-[--gold-400]/60 bg-[--gold-400]/15 text-[--cream]"
+                    : "border-[--gold-400]/15 text-[--cream]/60 hover:border-[--gold-400]/30",
+                )}
+              >
+                <Icon className="size-4" />
+                {meta.label}
+              </button>
+            );
+          },
+        )}
+      </div>
+      <div className="space-y-1.5">
+        <Label className="text-xs text-[--cream]/70">Monto</Label>
+        <Input
+          type="number"
+          inputMode="decimal"
+          step="0.01"
+          min="0.01"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          required
+          disabled={busy}
+        />
+      </div>
+      {method === PAYMENT_METHOD.CARD || method === PAYMENT_METHOD.TRANSFER ? (
+        <div className="space-y-1.5">
+          <Label className="text-xs text-[--cream]/70">
+            Referencia <span className="text-[--cream]/40">(opcional)</span>
+          </Label>
+          <Input
+            value={reference}
+            onChange={(e) => setReference(e.target.value)}
+            placeholder={
+              method === PAYMENT_METHOD.CARD
+                ? "Últimos 4 / TXN ID"
+                : "Nº de transferencia"
+            }
+            maxLength={120}
+            disabled={busy}
+          />
+        </div>
+      ) : null}
+      <div className="flex justify-end gap-2">
+        <Button type="button" variant="ghost" size="sm" onClick={onCancel} disabled={busy}>
+          Cancelar
+        </Button>
+        <Button type="submit" size="sm" disabled={busy}>
+          {busy ? "Registrando..." : "Registrar pago"}
+        </Button>
+      </div>
+    </form>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
 
 function Row({ label, value, bold }: { label: string; value: number; bold?: boolean }) {
   return (
