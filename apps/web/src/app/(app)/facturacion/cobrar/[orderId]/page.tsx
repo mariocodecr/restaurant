@@ -61,7 +61,7 @@ export default async function CobrarPage({ params }: CobrarPageProps) {
         order={order}
         items={items ?? []}
         payments={payments ?? []}
-        currency={org?.currency ?? "USD"}
+        currency={org?.currency ?? "CRC"}
         tableName={
           order.table_id
             ? (tables ?? []).find((t) => t.id === order.table_id)?.name ?? null

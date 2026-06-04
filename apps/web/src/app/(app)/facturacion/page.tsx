@@ -66,7 +66,7 @@ export default async function BillingPage() {
   return (
     <div className="px-6 py-8 sm:px-10 sm:py-12">
       <BillingView
-        currency={org?.currency ?? "USD"}
+        currency={org?.currency ?? "CRC"}
         pendingOrders={(pendingOrders ?? []).map((o) => ({
           ...o,
           paidSoFar: paidByOrder.get(o.id) ?? 0,
