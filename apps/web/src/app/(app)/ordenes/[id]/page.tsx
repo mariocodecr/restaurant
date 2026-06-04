@@ -27,30 +27,40 @@ export default async function OrderDetailPage({ params }: OrderDetailPageProps) 
 
   if (!order) notFound();
 
-  const [{ data: products }, { data: categories }, { data: tables }, { data: invoice }] =
-    await Promise.all([
-      supabase
-        .from("products")
-        .select("id, name, price, category_id, is_active")
-        .eq("organization_id", order.organization_id)
-        .eq("is_active", true)
-        .order("name"),
-      supabase
-        .from("categories")
-        .select("id, name")
-        .eq("organization_id", order.organization_id)
-        .eq("is_active", true)
-        .order("sort_order"),
-      supabase
-        .from("tables")
-        .select("id, name")
-        .eq("organization_id", order.organization_id),
-      supabase
-        .from("invoices")
-        .select("id, invoice_number")
-        .eq("order_id", id)
-        .maybeSingle(),
-    ]);
+  const [
+    { data: products },
+    { data: categories },
+    { data: tables },
+    { data: invoice },
+    { data: org },
+  ] = await Promise.all([
+    supabase
+      .from("products")
+      .select("id, name, price, category_id, is_active")
+      .eq("organization_id", order.organization_id)
+      .eq("is_active", true)
+      .order("name"),
+    supabase
+      .from("categories")
+      .select("id, name")
+      .eq("organization_id", order.organization_id)
+      .eq("is_active", true)
+      .order("sort_order"),
+    supabase
+      .from("tables")
+      .select("id, name")
+      .eq("organization_id", order.organization_id),
+    supabase
+      .from("invoices")
+      .select("id, invoice_number")
+      .eq("order_id", id)
+      .maybeSingle(),
+    supabase
+      .from("organizations")
+      .select("currency")
+      .eq("id", order.organization_id)
+      .maybeSingle(),
+  ]);
 
   return (
     <div className="px-6 py-8 sm:px-10 sm:py-12">
@@ -61,6 +71,7 @@ export default async function OrderDetailPage({ params }: OrderDetailPageProps) 
         categories={categories ?? []}
         tables={tables ?? []}
         invoice={invoice ?? null}
+        currency={org?.currency ?? "CRC"}
       />
     </div>
   );

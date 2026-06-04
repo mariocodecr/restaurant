@@ -22,6 +22,7 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { apiRequest } from "@/lib/api/client";
+import { formatMoney } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 interface OrderRow {
@@ -145,7 +146,7 @@ export function PaymentView({
             Total
           </p>
           <p className="text-3xl font-semibold text-[--gold-200]">
-            {currency} {formatMoney(Number(order.total))}
+            {formatMoney(Number(order.total), currency)}
           </p>
         </div>
       </header>
@@ -175,16 +176,16 @@ export function PaymentView({
                   {it.product_name_snapshot}
                 </span>
                 <span className="text-sm text-[--cream]">
-                  {formatMoney(Number(it.line_total ?? 0))}
+                  {formatMoney(Number(it.line_total ?? 0), currency)}
                 </span>
               </li>
             ))}
           </ul>
           <dl className="mt-4 space-y-1 border-t border-[--gold-400]/15 pt-3 text-sm">
-            <Row label="Subtotal" value={Number(order.subtotal)} />
-            <Row label="Descuento" value={-Number(order.discount_amount)} />
-            <Row label="Impuestos" value={Number(order.tax_amount)} />
-            <Row label="Total" value={Number(order.total)} bold />
+            <Row label="Subtotal" value={Number(order.subtotal)} currency={currency} />
+            <Row label="Descuento" value={-Number(order.discount_amount)} currency={currency} />
+            <Row label="Impuestos" value={Number(order.tax_amount)} currency={currency} />
+            <Row label="Total" value={Number(order.total)} currency={currency} bold />
           </dl>
         </GlassCard>
 
@@ -217,7 +218,7 @@ export function PaymentView({
                     </span>
                     <span className="flex items-center gap-2">
                       <span className="font-medium text-[--cream]">
-                        {formatMoney(Number(p.amount))}
+                        {formatMoney(Number(p.amount), currency)}
                       </span>
                       <button
                         type="button"
@@ -243,8 +244,8 @@ export function PaymentView({
           ) : null}
 
           <div className="mt-3 space-y-1.5 rounded-md border border-[--gold-400]/15 bg-[--gold-400]/[0.04] px-3 py-2 text-sm">
-            <Row label="Pagado" value={paidTotal} />
-            <Row label="Falta" value={remaining} bold />
+            <Row label="Pagado" value={paidTotal} currency={currency} />
+            <Row label="Falta" value={remaining} currency={currency} bold />
           </div>
 
           {fullyPaid ? (
@@ -383,20 +384,23 @@ function AddPaymentForm({
   );
 }
 
-function Row({ label, value, bold }: { label: string; value: number; bold?: boolean }) {
+function Row({
+  label,
+  value,
+  currency,
+  bold,
+}: {
+  label: string;
+  value: number;
+  currency: string;
+  bold?: boolean;
+}) {
   return (
     <div className={cn("flex items-center justify-between", bold && "text-base")}>
       <dt className="text-[--cream]/60">{label}</dt>
       <dd className={cn("font-medium text-[--cream]", bold && "text-[--gold-200] text-lg")}>
-        {formatMoney(value)}
+        {formatMoney(value, currency)}
       </dd>
     </div>
   );
-}
-
-function formatMoney(value: number): string {
-  return value.toLocaleString("es-CR", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
 }

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowLeft, Printer } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { formatMoney } from "@/lib/format";
 
 interface InvoiceRow {
   id: string;
@@ -142,8 +143,8 @@ export function InvoiceView({
               <tr key={it.id}>
                 <td>{it.product_name_snapshot}</td>
                 <td className="numeric">{it.quantity}</td>
-                <td className="numeric">{formatMoney(Number(it.unit_price))}</td>
-                <td className="numeric">{formatMoney(Number(it.line_total ?? 0))}</td>
+                <td className="numeric">{formatMoney(Number(it.unit_price), invoice.currency)}</td>
+                <td className="numeric">{formatMoney(Number(it.line_total ?? 0), invoice.currency)}</td>
               </tr>
             ))}
           </tbody>
@@ -175,7 +176,7 @@ export function InvoiceView({
                     {METHOD_LABEL[p.method] ?? p.method}
                     {p.reference ? ` · ${p.reference}` : ""}
                   </span>
-                  <span>{formatMoney(Number(p.amount))}</span>
+                  <span>{formatMoney(Number(p.amount), invoice.currency)}</span>
                 </li>
               ))}
             </ul>
@@ -358,15 +359,8 @@ function Row({
     >
       <span>{label}</span>
       <span style={{ fontVariantNumeric: "tabular-nums" }}>
-        {currency} {formatMoney(value)}
+        {formatMoney(value, currency)}
       </span>
     </div>
   );
-}
-
-function formatMoney(value: number): string {
-  return value.toLocaleString("es-CR", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
 }

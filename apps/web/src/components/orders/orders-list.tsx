@@ -7,6 +7,7 @@ import { ORDER_STATUS, type OrderStatus } from "@restaurant/shared";
 
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/ui/glass-card";
+import { formatMoney } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 import {
@@ -27,6 +28,7 @@ interface OrderRow {
 interface OrdersListProps {
   orders: OrderRow[];
   tableLookup: Record<string, string>;
+  currency: string;
 }
 
 type Filter = "active" | "all" | OrderStatus;
@@ -38,7 +40,7 @@ const ACTIVE_STATUSES: OrderStatus[] = [
   ORDER_STATUS.DELIVERED,
 ];
 
-export function OrdersList({ orders, tableLookup }: OrdersListProps) {
+export function OrdersList({ orders, tableLookup, currency }: OrdersListProps) {
   const [filter, setFilter] = useState<Filter>("active");
 
   const filtered = useMemo(() => {
@@ -130,7 +132,7 @@ export function OrdersList({ orders, tableLookup }: OrdersListProps) {
                   </span>
                   <OrderStatusPill status={o.status as OrderStatus} />
                   <span className="text-right text-sm font-semibold text-[--gold-100]">
-                    {formatMoney(Number(o.total))}
+                    {formatMoney(Number(o.total), currency)}
                   </span>
                 </Link>
               </li>
@@ -142,9 +144,3 @@ export function OrdersList({ orders, tableLookup }: OrdersListProps) {
   );
 }
 
-function formatMoney(value: number): string {
-  return value.toLocaleString("es-CR", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-}

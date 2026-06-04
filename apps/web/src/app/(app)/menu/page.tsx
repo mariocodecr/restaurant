@@ -23,20 +23,26 @@ export default async function MenuPage() {
   if (!memberships || memberships.length === 0) redirect("/onboarding");
   const currentOrgId = memberships[0]!.organization_id;
 
-  const [{ data: categories }, { data: products }] = await Promise.all([
-    supabase
-      .from("categories")
-      .select("*")
-      .eq("organization_id", currentOrgId)
-      .order("sort_order", { ascending: true })
-      .order("name", { ascending: true }),
-    supabase
-      .from("products")
-      .select("*")
-      .eq("organization_id", currentOrgId)
-      .order("sort_order", { ascending: true })
-      .order("name", { ascending: true }),
-  ]);
+  const [{ data: categories }, { data: products }, { data: org }] =
+    await Promise.all([
+      supabase
+        .from("categories")
+        .select("*")
+        .eq("organization_id", currentOrgId)
+        .order("sort_order", { ascending: true })
+        .order("name", { ascending: true }),
+      supabase
+        .from("products")
+        .select("*")
+        .eq("organization_id", currentOrgId)
+        .order("sort_order", { ascending: true })
+        .order("name", { ascending: true }),
+      supabase
+        .from("organizations")
+        .select("currency")
+        .eq("id", currentOrgId)
+        .maybeSingle(),
+    ]);
 
   return (
     <div className="px-6 py-8 sm:px-10 sm:py-12">
@@ -44,6 +50,7 @@ export default async function MenuPage() {
         organizationId={currentOrgId}
         initialCategories={categories ?? []}
         initialProducts={products ?? []}
+        currency={org?.currency ?? "CRC"}
       />
     </div>
   );

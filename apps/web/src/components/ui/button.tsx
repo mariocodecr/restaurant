@@ -8,10 +8,9 @@ import { cn } from "@/lib/utils";
 // Glass = frosted-outline secondary.
 // Ghost = minimal tertiary.
 //
-// The actual visual treatments live in globals.css under .stardust-btn /
-// .glass-btn / .ghost-btn — variants here only control sizing, layout and
-// composition. Keep the visual rules in one place (CSS) so multiple
-// instances on a page don't ship duplicate inline <style> tags.
+// The visual treatments live in globals.css under .stardust-btn /
+// .glass-btn / .ghost-btn. The inner .stardust-wrap span carries the
+// pearl gradient + shimmer pseudo-elements; no glyphs.
 const buttonVariants = cva(
   "inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0",
   {
@@ -63,17 +62,14 @@ function Button({
       className={cn(buttonVariants({ variant, size, className }))}
       {...props}
     >
-      {isStardust ? (
-        <span className="stardust-wrap">
-          <span aria-hidden className="stardust-spark-idle">✧</span>
-          <span aria-hidden className="stardust-spark-hover">✦</span>
-          {children}
-        </span>
-      ) : (
-        <span className="inline-flex w-full items-center justify-center gap-2">
-          {children}
-        </span>
-      )}
+      <span
+        className={cn(
+          "inline-flex w-full items-center justify-center gap-2",
+          isStardust && "stardust-wrap",
+        )}
+      >
+        {children}
+      </span>
     </Comp>
   );
 }

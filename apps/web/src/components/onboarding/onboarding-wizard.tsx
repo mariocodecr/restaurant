@@ -48,7 +48,7 @@ export function OnboardingWizard({ ownerName }: OnboardingWizardProps) {
   const [orgName, setOrgName] = useState("");
   const [slug, setSlug] = useState("");
   const [slugTouched, setSlugTouched] = useState(false);
-  const [currency, setCurrency] = useState("USD");
+  const [currency, setCurrency] = useState("CRC");
   const [timezone, setTimezone] = useState(defaultTimezone);
   const [taxId, setTaxId] = useState("");
 

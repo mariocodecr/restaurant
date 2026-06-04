@@ -25,6 +25,7 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { apiRequest } from "@/lib/api/client";
+import { formatMoney } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 import { OrderStatusPill } from "./order-status-pill";
@@ -86,6 +87,7 @@ interface OrderDetailProps {
   categories: CategoryOption[];
   tables: TableOption[];
   invoice: InvoiceRow | null;
+  currency: string;
 }
 
 interface TransitionAction {
@@ -118,6 +120,7 @@ export function OrderDetail({
   categories,
   tables,
   invoice,
+  currency,
 }: OrderDetailProps) {
   const router = useRouter();
   const [showAdd, setShowAdd] = useState(false);
@@ -166,7 +169,7 @@ export function OrderDetail({
         <div className="text-right">
           <p className="text-xs uppercase tracking-[0.18em] text-[--cream]/40">Total</p>
           <p className="text-3xl font-semibold text-[--gold-200]">
-            {formatMoney(Number(order.total))}
+            {formatMoney(Number(order.total), currency)}
           </p>
         </div>
       </header>
@@ -241,10 +244,10 @@ export function OrderDetail({
                   </div>
                   <div className="text-right">
                     <p className="text-sm text-[--cream]">
-                      {formatMoney(Number(it.line_total ?? 0))}
+                      {formatMoney(Number(it.line_total ?? 0), currency)}
                     </p>
                     <p className="text-[10px] uppercase tracking-wider text-[--cream]/40">
-                      {formatMoney(Number(it.unit_price))} c/u
+                      {formatMoney(Number(it.unit_price), currency)} c/u
                     </p>
                   </div>
                   {canEditItems ? (
@@ -277,11 +280,11 @@ export function OrderDetail({
               Totales
             </h2>
             <dl className="space-y-2 text-sm">
-              <Row label="Subtotal" value={Number(order.subtotal)} />
-              <Row label="Descuento" value={-Number(order.discount_amount)} />
-              <Row label="Impuestos" value={Number(order.tax_amount)} />
+              <Row label="Subtotal" value={Number(order.subtotal)} currency={currency} />
+              <Row label="Descuento" value={-Number(order.discount_amount)} currency={currency} />
+              <Row label="Impuestos" value={Number(order.tax_amount)} currency={currency} />
               <div className="border-t border-[--gold-400]/15 pt-2">
-                <Row label="Total" value={Number(order.total)} bold />
+                <Row label="Total" value={Number(order.total)} currency={currency} bold />
               </div>
             </dl>
           </GlassCard>
@@ -384,12 +387,22 @@ export function OrderDetail({
 // Helpers
 // ---------------------------------------------------------------------------
 
-function Row({ label, value, bold }: { label: string; value: number; bold?: boolean }) {
+function Row({
+  label,
+  value,
+  currency,
+  bold,
+}: {
+  label: string;
+  value: number;
+  currency: string;
+  bold?: boolean;
+}) {
   return (
     <div className={cn("flex items-center justify-between", bold && "text-base")}>
       <dt className="text-[--cream]/60">{label}</dt>
       <dd className={cn("font-medium text-[--cream]", bold && "text-[--gold-200] text-lg")}>
-        {formatMoney(value)}
+        {formatMoney(value, currency)}
       </dd>
     </div>
   );
@@ -522,9 +535,3 @@ function AddItemForm({
   );
 }
 
-function formatMoney(value: number): string {
-  return value.toLocaleString("es-CR", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-}

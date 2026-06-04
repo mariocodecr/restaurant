@@ -259,20 +259,6 @@
 .ghost-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .ghost-btn:focus-visible { outline: 2px solid rgba(212, 163, 92, 0.5); outline-offset: 2px; }
 
-/* Sparkle accent on stardust */
-.stardust-btn .stardust-spark-idle,
-.stardust-btn .stardust-spark-hover {
-  font-size: 0.7em;
-  line-height: 1;
-  color: rgba(255, 240, 200, 0.85);
-  text-shadow: 0 0 8px rgba(255, 196, 110, 0.7);
-  transform: translateY(-1px);
-}
-.stardust-btn .stardust-spark-idle  { display: inline-block; }
-.stardust-btn .stardust-spark-hover { display: none; }
-.stardust-btn:hover:not(:disabled) .stardust-spark-idle  { display: none; }
-.stardust-btn:hover:not(:disabled) .stardust-spark-hover { display: inline-block; }
-
 /* Hide the native cursor while the luxury cursor follower is mounted */
 html.luxury-cursor-active,
 html.luxury-cursor-active * {

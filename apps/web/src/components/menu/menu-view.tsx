@@ -15,6 +15,7 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { apiRequest } from "@/lib/api/client";
+import { formatMoney } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 interface CategoryRow {
@@ -46,6 +47,7 @@ interface MenuViewProps {
   organizationId: string;
   initialCategories: CategoryRow[];
   initialProducts: ProductRow[];
+  currency: string;
 }
 
 // Sentinel used to indicate "show the new-product form" instead of editing one.
@@ -55,6 +57,7 @@ export function MenuView({
   organizationId,
   initialCategories,
   initialProducts,
+  currency,
 }: MenuViewProps) {
   const router = useRouter();
 
@@ -336,11 +339,11 @@ export function MenuView({
                     </div>
                     <div className="text-right">
                       <p className="text-sm font-semibold text-[--gold-200]">
-                        {formatMoney(p.price)}
+                        {formatMoney(p.price, currency)}
                       </p>
                       {p.cost > 0 ? (
                         <p className="text-[10px] uppercase tracking-wider text-[--cream]/40">
-                          costo {formatMoney(p.cost)}
+                          costo {formatMoney(p.cost, currency)}
                         </p>
                       ) : null}
                     </div>
@@ -587,9 +590,3 @@ function EmptyState({
   );
 }
 
-function formatMoney(value: number): string {
-  return value.toLocaleString("es-CR", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-}

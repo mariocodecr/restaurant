@@ -19,7 +19,7 @@ export default async function OrdersPage() {
   if (!memberships || memberships.length === 0) redirect("/onboarding");
   const currentOrgId = memberships[0]!.organization_id;
 
-  const [{ data: orders }, { data: tables }] = await Promise.all([
+  const [{ data: orders }, { data: tables }, { data: org }] = await Promise.all([
     supabase
       .from("orders")
       .select("*")
@@ -30,6 +30,11 @@ export default async function OrdersPage() {
       .from("tables")
       .select("id, name, branch_id")
       .eq("organization_id", currentOrgId),
+    supabase
+      .from("organizations")
+      .select("currency")
+      .eq("id", currentOrgId)
+      .maybeSingle(),
   ]);
 
   const tableLookup = new Map(
@@ -41,6 +46,7 @@ export default async function OrdersPage() {
       <OrdersList
         orders={orders ?? []}
         tableLookup={Object.fromEntries(tableLookup)}
+        currency={org?.currency ?? "CRC"}
       />
     </div>
   );

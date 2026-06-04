@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { CreditCard, FileText, Receipt as ReceiptIcon } from "lucide-react";
 
 import { GlassCard } from "@/components/ui/glass-card";
+import { formatMoney } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 interface PendingOrder {
@@ -83,12 +84,12 @@ export function BillingView({
         />
         <Stat
           label="Hoy"
-          value={`${currency} ${formatMoney(dailyTotal)}`}
+          value={formatMoney(dailyTotal, currency)}
           hint="facturado"
         />
         <Stat
           label="Mes"
-          value={`${currency} ${formatMoney(monthlyTotal)}`}
+          value={formatMoney(monthlyTotal, currency)}
           hint="facturado"
         />
       </div>
@@ -140,11 +141,11 @@ export function BillingView({
                       )}
                       <span className="text-right">
                         <span className="block text-sm font-semibold text-[--gold-100]">
-                          {currency} {formatMoney(remaining)}
+                          {formatMoney(remaining, currency)}
                         </span>
                         {partial ? (
                           <span className="block text-[10px] text-[--cream]/50">
-                            de {formatMoney(Number(o.total))}
+                            de {formatMoney(Number(o.total), currency)}
                           </span>
                         ) : null}
                       </span>
@@ -186,7 +187,7 @@ export function BillingView({
                       })}
                     </span>
                     <span className="text-right text-sm font-semibold text-[--gold-100]">
-                      {inv.currency} {formatMoney(Number(inv.total))}
+                      {formatMoney(Number(inv.total), inv.currency)}
                     </span>
                   </Link>
                 </li>
@@ -276,13 +277,6 @@ function EmptyState({
       </div>
     </div>
   );
-}
-
-function formatMoney(value: number): string {
-  return value.toLocaleString("es-CR", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
 }
 
 function minutesAgo(iso: string): number {
