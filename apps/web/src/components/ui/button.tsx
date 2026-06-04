@@ -8,29 +8,28 @@ import { cn } from "@/lib/utils";
 // Glass = frosted-outline secondary.
 // Ghost = minimal tertiary.
 //
-// The visual treatments live in globals.css under .stardust-btn /
-// .glass-btn / .ghost-btn. The inner .stardust-wrap span carries the
-// pearl gradient + shimmer pseudo-elements; no glyphs.
+// Visual treatment lives in globals.css. The pseudo-elements (sheen +
+// halo) are now on .stardust-btn itself, so children render directly
+// (no inner wrapper). This keeps `asChild` clean — `<Button asChild>
+// <Link>…</Link></Button>` becomes a single <Link class="stardust-btn">.
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 leading-none",
   {
     variants: {
       variant: {
         default: "stardust-btn",
         outline: "glass-btn",
         ghost: "ghost-btn",
-        // Kept for back-compat with magic-generated snippets that ask for
-        // "secondary" — we route it to the glass treatment.
         secondary: "glass-btn",
         destructive:
-          "stardust-btn [--stardust-bg:#3b0a0a] [&_*]:!text-rose-100",
-        link: "text-sky-300 underline-offset-4 hover:underline",
+          "stardust-btn [--stardust-bg-from:#3b0a0a] [--stardust-bg-via:#6b1818] [--stardust-bg-to:#a83838] [&_*]:!text-rose-100",
+        link: "text-[--gold-300] underline-offset-4 hover:underline",
       },
       size: {
         sm: "h-9 px-4 text-xs",
         default: "h-11 px-6 text-sm",
         lg: "h-13 px-8 text-base",
-        icon: "h-11 w-11",
+        icon: "h-11 w-11 px-0",
       },
     },
     defaultVariants: {
@@ -50,27 +49,15 @@ function Button({
   variant,
   size,
   asChild = false,
-  children,
   ...props
 }: ButtonProps) {
   const Comp = asChild ? Slot : "button";
-  const isStardust = (variant ?? "default") === "default" || variant === "destructive";
-
   return (
     <Comp
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
       {...props}
-    >
-      <span
-        className={cn(
-          "inline-flex w-full items-center justify-center gap-2",
-          isStardust && "stardust-wrap",
-        )}
-      >
-        {children}
-      </span>
-    </Comp>
+    />
   );
 }
 
