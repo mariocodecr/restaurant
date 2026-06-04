@@ -16,15 +16,10 @@ export default async function OrderDetailPage({ params }: OrderDetailPageProps) 
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const [{ data: order }, { data: items }, { data: payments }] = await Promise.all([
+  const [{ data: order }, { data: items }] = await Promise.all([
     supabase.from("orders").select("*").eq("id", id).maybeSingle(),
     supabase
       .from("order_items")
-      .select("*")
-      .eq("order_id", id)
-      .order("created_at", { ascending: true }),
-    supabase
-      .from("payments")
       .select("*")
       .eq("order_id", id)
       .order("created_at", { ascending: true }),
@@ -50,7 +45,11 @@ export default async function OrderDetailPage({ params }: OrderDetailPageProps) 
         .from("tables")
         .select("id, name")
         .eq("organization_id", order.organization_id),
-      supabase.from("invoices").select("*").eq("order_id", id).maybeSingle(),
+      supabase
+        .from("invoices")
+        .select("id, invoice_number")
+        .eq("order_id", id)
+        .maybeSingle(),
     ]);
 
   return (
@@ -61,7 +60,6 @@ export default async function OrderDetailPage({ params }: OrderDetailPageProps) 
         products={products ?? []}
         categories={categories ?? []}
         tables={tables ?? []}
-        payments={payments ?? []}
         invoice={invoice ?? null}
       />
     </div>

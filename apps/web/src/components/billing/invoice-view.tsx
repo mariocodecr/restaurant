@@ -73,11 +73,11 @@ export function InvoiceView({
       {/* Toolbar — hidden on print */}
       <div className="invoice-toolbar flex items-center justify-between gap-3 px-6 py-4 print:hidden">
         <Link
-          href={`/ordenes/${order.id}`}
+          href="/facturacion"
           className="inline-flex items-center gap-2 text-sm text-[--cream]/60 hover:text-[--cream]"
         >
           <ArrowLeft className="size-4" />
-          Volver a la orden
+          Volver a facturación
         </Link>
         <Button type="button" onClick={() => window.print()}>
           <Printer className="size-4" />

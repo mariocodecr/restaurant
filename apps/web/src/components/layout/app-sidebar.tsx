@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   BarChart3,
   ChefHat,
+  FileText,
   Grid3X3,
   LayoutDashboard,
   Package,
@@ -30,6 +31,7 @@ const NAV_ITEMS: NavItem[] = [
   { href: "/mesas", label: "Mesas", icon: Grid3X3, available: true },
   { href: "/ordenes", label: "Órdenes", icon: Receipt, available: true },
   { href: "/cocina", label: "Cocina", icon: ChefHat, available: true },
+  { href: "/facturacion", label: "Facturación", icon: FileText, available: true },
   { href: "/inventario", label: "Inventario", icon: Package, available: false },
   { href: "/proveedores", label: "Proveedores", icon: Truck, available: false },
   { href: "/reportes", label: "Reportes", icon: BarChart3, available: false },
