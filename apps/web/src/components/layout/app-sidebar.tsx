@@ -35,7 +35,7 @@ const NAV_ITEMS: NavItem[] = [
   { href: "/inventario", label: "Inventario", icon: Package, available: false },
   { href: "/proveedores", label: "Proveedores", icon: Truck, available: false },
   { href: "/reportes", label: "Reportes", icon: BarChart3, available: false },
-  { href: "/equipo", label: "Equipo", icon: Users, available: false },
+  { href: "/equipo", label: "Equipo", icon: Users, available: true },
 ];
 
 export function AppSidebar() {
