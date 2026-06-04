@@ -4,6 +4,7 @@ import { ConfigModule } from "@nestjs/config";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { CategoriesModule } from "./modules/categories/categories.module";
+import { InventoryModule } from "./modules/inventory/inventory.module";
 import { InvoicesModule } from "./modules/invoices/invoices.module";
 import { MeModule } from "./modules/me/me.module";
 import { MembershipsModule } from "./modules/memberships/memberships.module";
@@ -34,6 +35,7 @@ import { DatabaseModule } from "./shared/database/database.module";
     PaymentsModule,
     InvoicesModule,
     MembershipsModule,
+    InventoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

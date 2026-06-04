@@ -8,3 +8,4 @@ export * from "./schemas/table.js";
 export * from "./schemas/order.js";
 export * from "./schemas/payment.js";
 export * from "./schemas/membership.js";
+export * from "./schemas/inventory.js";

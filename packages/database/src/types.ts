@@ -99,6 +99,149 @@ export type Database = {
           },
         ];
       };
+      ingredients: {
+        Row: {
+          created_at: string;
+          current_cost: number;
+          id: string;
+          is_active: boolean;
+          min_stock_alert: number | null;
+          name: string;
+          organization_id: string;
+          sort_order: number;
+          unit: string;
+          updated_at: string;
+        };
+        Insert: {
+          created_at?: string;
+          current_cost?: number;
+          id?: string;
+          is_active?: boolean;
+          min_stock_alert?: number | null;
+          name: string;
+          organization_id: string;
+          sort_order?: number;
+          unit: string;
+          updated_at?: string;
+        };
+        Update: {
+          created_at?: string;
+          current_cost?: number;
+          id?: string;
+          is_active?: boolean;
+          min_stock_alert?: number | null;
+          name?: string;
+          organization_id?: string;
+          sort_order?: number;
+          unit?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "ingredients_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      stock_levels: {
+        Row: {
+          branch_id: string;
+          ingredient_id: string;
+          organization_id: string;
+          quantity: number;
+          updated_at: string;
+        };
+        Insert: {
+          branch_id: string;
+          ingredient_id: string;
+          organization_id: string;
+          quantity?: number;
+          updated_at?: string;
+        };
+        Update: {
+          branch_id?: string;
+          ingredient_id?: string;
+          organization_id?: string;
+          quantity?: number;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "stock_levels_branch_id_fkey";
+            columns: ["branch_id"];
+            isOneToOne: false;
+            referencedRelation: "branches";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "stock_levels_ingredient_id_fkey";
+            columns: ["ingredient_id"];
+            isOneToOne: false;
+            referencedRelation: "ingredients";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      stock_movements: {
+        Row: {
+          branch_id: string;
+          created_at: string;
+          created_by_user_id: string | null;
+          id: string;
+          ingredient_id: string;
+          kind: string;
+          notes: string | null;
+          order_item_id: string | null;
+          organization_id: string;
+          quantity_delta: number;
+          unit_cost: number;
+        };
+        Insert: {
+          branch_id: string;
+          created_at?: string;
+          created_by_user_id?: string | null;
+          id?: string;
+          ingredient_id: string;
+          kind: string;
+          notes?: string | null;
+          order_item_id?: string | null;
+          organization_id: string;
+          quantity_delta: number;
+          unit_cost?: number;
+        };
+        Update: {
+          branch_id?: string;
+          created_at?: string;
+          created_by_user_id?: string | null;
+          id?: string;
+          ingredient_id?: string;
+          kind?: string;
+          notes?: string | null;
+          order_item_id?: string | null;
+          organization_id?: string;
+          quantity_delta?: number;
+          unit_cost?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "stock_movements_branch_id_fkey";
+            columns: ["branch_id"];
+            isOneToOne: false;
+            referencedRelation: "branches";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "stock_movements_ingredient_id_fkey";
+            columns: ["ingredient_id"];
+            isOneToOne: false;
+            referencedRelation: "ingredients";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       invoices: {
         Row: {
           created_at: string;
