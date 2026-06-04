@@ -32,7 +32,7 @@ const NAV_ITEMS: NavItem[] = [
   { href: "/ordenes", label: "Órdenes", icon: Receipt, available: true },
   { href: "/cocina", label: "Cocina", icon: ChefHat, available: true },
   { href: "/facturacion", label: "Facturación", icon: FileText, available: true },
-  { href: "/inventario", label: "Inventario", icon: Package, available: false },
+  { href: "/inventario", label: "Inventario", icon: Package, available: true },
   { href: "/proveedores", label: "Proveedores", icon: Truck, available: false },
   { href: "/reportes", label: "Reportes", icon: BarChart3, available: false },
   { href: "/equipo", label: "Equipo", icon: Users, available: true },
